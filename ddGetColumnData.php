@@ -12,8 +12,9 @@
  * @param $columnsNumber {integer} - Количество колонок. Default: 1.
  * @param $rowsMin {integer} - Минимальное количество строк в одной колонке (0 — любое). Default: 0;
  * @param $orderBy {'column'; 'row'} - Порядок элементов: 'column' - сначала заполняется первая колонка, потом вторая и т.д. ([[1, 2, 3] [4, 5, 6] [7, 8, 9]]); 'row' - элементы располагаются по срокам ([[1, 4, 7] [2, 5, 8] [3, 6, 9]]). Default: 'column'.
- * @param $columnTpl {string} - Шаблон колонки. Доступные плэйсхолдеры: [+wrapper+]. @required
- * @param $columnLastTpl {string} - Шаблон последней колонки. Доступные плэйсхолдеры: [+wrapper+]. Default: = $columnTpl.
+ * @param $columnTpl {string: chunkName} - Шаблон колонки. Доступные плэйсхолдеры: [+wrapper+]. @required
+ * @param $columnLastTpl {string: chunkName} - Шаблон последней колонки. Доступные плэйсхолдеры: [+wrapper+]. Default: = $columnTpl.
+ * @param $outerTpl {string: chunkName} - Шаблон внешней обёртки. Доступные плэйсхолдеры: [+wrapper+]. Default: —.
  * @param $dittoId {integer} - Унакальный ID сессии Ditto. Default: ''.
  * 
  * @copyright 2014, DivanDesign
@@ -101,6 +102,10 @@ if ($rowsTotal > 0){
 			$result .= $modx->parseChunk($tpl, array('wrapper' => implode('', $res[$i])),'[+','+]');
 		}
 		$i++;
+	}
+	
+	if (isset($outerTpl)){
+		$result = $modx->parseChunk($outerTpl, array('wrapper' => $result), '[+', '+]');
 	}
 	
 	return $result;
