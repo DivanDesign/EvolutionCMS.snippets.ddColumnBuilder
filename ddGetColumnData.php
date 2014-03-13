@@ -1,7 +1,7 @@
 <?php
 /**
  * ddGetColumnData.php
- * @version 3.2 (2013-07-11)
+ * @version 3.2.1 (2014-03-13)
  * 
  * @desc Выводит результаты Ditto в несколько колонок, стараясь равномерно распределить количество.
  * 
@@ -16,7 +16,7 @@
  * @param $columnLastTpl {string} - Шаблон последней колонки. Доступные плэйсхолдеры: [+wrapper+]. Default: = $columnTpl.
  * @param $dittoId {integer} - Унакальный ID сессии Ditto. Default: ''.
  * 
- * @copyright 2013, DivanDesign
+ * @copyright 2014, DivanDesign
  * http://www.DivanDesign.biz
  */
 
@@ -88,15 +88,18 @@ if ($rowsTotal > 0){
 	
 	//Перебираем колонки
 	while ($i < $columnsNumber){
-		//Выбираем нужный шаблон
-		if ($i == $columnsNumber - 1){
-			$tpl = $columnLastTpl;
-		}else{
-			$tpl = $columnTpl;
+		//Проверим на всякий случай, что значение есть. Вылет бывает, когда указываешь 2 колонки, а Ditto возвращает один элемент (который на 2 колонки не разделить).
+		if (isset($res[$i])){
+			//Выбираем нужный шаблон
+			if ($i == $columnsNumber - 1){
+				$tpl = $columnLastTpl;
+			}else{
+				$tpl = $columnTpl;
+			}
+			
+			//Парсим колонку
+			$result .= $modx->parseChunk($tpl, array('wrapper' => implode('', $res[$i])),'[+','+]');
 		}
-		
-		//Парсим колонку
-		$result .= $modx->parseChunk($tpl, array('wrapper' => implode('', $res[$i])),'[+','+]');
 		$i++;
 	}
 	
