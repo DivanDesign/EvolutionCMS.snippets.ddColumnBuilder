@@ -14,7 +14,7 @@
  * @param $orderBy {'column'; 'row'} - Порядок элементов: 'column' - сначала заполняется первая колонка, потом вторая и т.д. ([[1, 2, 3] [4, 5, 6] [7, 8, 9]]); 'row' - элементы располагаются по срокам ([[1, 4, 7] [2, 5, 8] [3, 6, 9]]). Default: 'column'.
  * @param $columnTpl {string: chunkName} - Шаблон колонки. Доступные плэйсхолдеры: [+wrapper+]. @required
  * @param $columnLastTpl {string: chunkName} - Шаблон последней колонки. Доступные плэйсхолдеры: [+wrapper+]. Default: = $columnTpl.
- * @param $outerTpl {string: chunkName} - Шаблон внешней обёртки. Доступные плэйсхолдеры: [+wrapper+]. Default: —.
+ * @param $outerTpl {string: chunkName} - Шаблон внешней обёртки. Доступные плэйсхолдеры: [+wrapper+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: —.
  * @param $dittoId {integer} - Унакальный ID сессии Ditto. Default: ''.
  * 
  * @copyright 2014, DivanDesign
@@ -87,25 +87,27 @@ if ($rowsTotal > 0){
 	$result = '';
 	$i = 0;
 	
+	//Проверим на всякий случай. Вылет бывает, когда указываешь 2 колонки, а Ditto возвращает один элемент (который на 2 колонки не разделить).
+	if ($columnsNumber > count($res)){
+		$columnsNumber = count($res);
+	}
+	
 	//Перебираем колонки
 	while ($i < $columnsNumber){
-		//Проверим на всякий случай, что значение есть. Вылет бывает, когда указываешь 2 колонки, а Ditto возвращает один элемент (который на 2 колонки не разделить).
-		if (isset($res[$i])){
-			//Выбираем нужный шаблон
-			if ($i == $columnsNumber - 1){
-				$tpl = $columnLastTpl;
-			}else{
-				$tpl = $columnTpl;
-			}
-			
-			//Парсим колонку
-			$result .= $modx->parseChunk($tpl, array('wrapper' => implode('', $res[$i])),'[+','+]');
+		//Выбираем нужный шаблон
+		if ($i == $columnsNumber - 1){
+			$tpl = $columnLastTpl;
+		}else{
+			$tpl = $columnTpl;
 		}
+		
+		//Парсим колонку
+		$result .= $modx->parseChunk($tpl, array('wrapper' => implode('', $res[$i])),'[+','+]');
 		$i++;
 	}
 	
 	if (isset($outerTpl)){
-		$result = $modx->parseChunk($outerTpl, array('wrapper' => $result), '[+', '+]');
+		$result = $modx->parseChunk($outerTpl, array('wrapper' => $result, 'columnsNumber' => $columnsNumber), '[+', '+]');
 	}
 	
 	return $result;
