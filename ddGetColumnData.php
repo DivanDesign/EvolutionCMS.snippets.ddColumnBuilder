@@ -93,8 +93,18 @@ if ($rowsTotal > 0){
 		}
 	//В противном случае по колонкам
 	}else{
-		//Просто разбиваем массив на части, сохраняя оригинальную нумерацию
-		$res = array_chunk($source, $elementsInColumnNumber);
+		$res = array();
+		
+		//Проходка по кол-ву колонок-1
+		for ($i = 1; $i < $columnsNumber; $i++){ 
+			//Заполняем колонку нужным кол-вом
+			$res[] = array_splice($source, 0, $elementsInColumnNumber);
+			//Пересчет кол-ва в колонке для оставшегося кол-ва элементов и колонок
+			$elementsInColumnNumber = ceil(count($source) / ($columnsNumber - $i));
+		}
+		
+		//Последняя колонка с остатком
+		$res[] = $source;
 	}
 	
 	$result = '';
