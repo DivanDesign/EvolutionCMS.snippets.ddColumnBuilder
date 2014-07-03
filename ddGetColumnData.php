@@ -1,7 +1,7 @@
 <?php
 /**
  * ddGetColumnData.php
- * @version 3.3 (2014-03-13)
+ * @version 3.4 (2014-07-03)
  * 
  * @desc Выводит результаты Ditto в несколько колонок, стараясь равномерно распределить количество.
  * 
@@ -15,7 +15,8 @@
  * @param $columnTpl {string: chunkName} - Шаблон колонки. Доступные плэйсхолдеры: [+wrapper+]. @required
  * @param $columnLastTpl {string: chunkName} - Шаблон последней колонки. Доступные плэйсхолдеры: [+wrapper+]. Default: = $columnTpl.
  * @param $outerTpl {string: chunkName} - Шаблон внешней обёртки. Доступные плэйсхолдеры: [+wrapper+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: —.
- * @param $dittoId {integer} - Унакальный ID сессии Ditto. Default: ''.
+ * @param $source {'ditto'; string} - Плэйсходлер, содержащий одномерный массив со строками исходных данных. Default: 'ditto'.
+ * @param $dittoId {integer} - Уникальный ID сессии Ditto. Default: ''.
  * 
  * @copyright 2014, DivanDesign
  * http://www.DivanDesign.biz
@@ -29,13 +30,33 @@ $rowsMin = isset($rowsMin) ? intval($rowsMin) : 0;
 $orderBy = isset($orderBy) ? $orderBy : 'column';
 //Если шаблон последней колонки, не задан — будет как и все
 $columnLastTpl = isset($columnLastTpl) ? $columnLastTpl : $columnTpl;
-//ID сессии Ditto
-$dittoId = isset($dittoId) ? $dittoId.'_' : '';
-//Получаем необходимые результаты дитто
-$dittoRes = $modx->getPlaceholder($dittoId.'ditto_resource');
+//Источник
+$source = isset($source) ? $source : 'ditto';
+
+$rowsTotal = 0;
+
+if (strtolower($source) == 'ditto'){
+	//ID сессии Ditto
+	$dittoId = isset($dittoId) ? $dittoId.'_' : '';
+	
+	//Получаем необходимые результаты дитто
+	if ($dittoRes = $modx->getPlaceholder($dittoId.'ditto_resource')){
+		$source = array();
+		
+		foreach ($dittoRes as $key => $val){
+			$source[] = $modx->getPlaceholder($dittoId.'item['.$key.']');
+		}
+	}
+}else{
+	$source = $modx->getPlaceholder($source);
+	
+	if (!is_array($source)){
+		$source = array();
+	}
+}
 
 //Всего строк
-$rowsTotal = count($dittoRes);
+$rowsTotal = count($source);
 
 //Если что-то есть
 if ($rowsTotal > 0){
@@ -46,7 +67,7 @@ if ($rowsTotal > 0){
 	if ($rowsMin){
 		//Количество колонок при минимальном количестве строк
 		$colsWithRowMin = ceil($rowsTotal / $rowsMin);
-	
+		
 		//Если это количество меньше заданного
 		if ($colsWithRowMin < $columnsNumber){
 			//Тогда элементов в колонке будет меньше заданного (логика)
@@ -63,9 +84,9 @@ if ($rowsTotal > 0){
 		$i = 0;
 		
 		//Пробегаемся по результатам
-		foreach ($dittoRes as $key => $val){
+		foreach ($source as $val){
 			//Запоминаем уже готовые отпаршенные значения в нужную колонку
-			$res[$i][] = $modx->getPlaceholder($dittoId.'item['.$key.']');
+			$res[$i][] = $val;
 			
 			$i++;
 			if ($i == $columnsNumber){$i = 0;}
@@ -73,15 +94,17 @@ if ($rowsTotal > 0){
 	//В противном случае по колонкам
 	}else{
 		$res = array();
-	
-		//Пробегаемся по результатам
-		foreach ($dittoRes as $key => $val){
-			//Запоминаем уже готовые отпаршенные значения
-			$res[] = $modx->getPlaceholder($dittoId.'item['.$key.']');
+		
+		//Проходка по кол-ву колонок-1
+		for ($i = 1; $i < $columnsNumber; $i++){ 
+			//Заполняем колонку нужным кол-вом
+			$res[] = array_splice($source, 0, $elementsInColumnNumber);
+			//Пересчет кол-ва в колонке для оставшегося кол-ва элементов и колонок
+			$elementsInColumnNumber = ceil(count($source) / ($columnsNumber - $i));
 		}
 		
-		//Просто разбиваем массив на части, сохраняя оригинальную нумерацию
-		$res = array_chunk($res, $elementsInColumnNumber);
+		//Последняя колонка с остатком
+		$res[] = $source;
 	}
 	
 	$result = '';
