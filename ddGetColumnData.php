@@ -1,7 +1,7 @@
 <?php
 /**
  * ddGetColumnData.php
- * @version 3.3 (2014-03-13)
+ * @version 3.4 (2014-07-03)
  * 
  * @desc Выводит результаты Ditto в несколько колонок, стараясь равномерно распределить количество.
  * 
@@ -15,8 +15,8 @@
  * @param $columnTpl {string: chunkName} - Шаблон колонки. Доступные плэйсхолдеры: [+wrapper+]. @required
  * @param $columnLastTpl {string: chunkName} - Шаблон последней колонки. Доступные плэйсхолдеры: [+wrapper+]. Default: = $columnTpl.
  * @param $outerTpl {string: chunkName} - Шаблон внешней обёртки. Доступные плэйсхолдеры: [+wrapper+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: —.
- * @param $source {'ditto'; string} - Плейсходлер, содержащий одномерный массив со строками исходных данных. Default: 'ditto'.
- * @param $dittoId {integer} - Унакальный ID сессии Ditto. Default: ''.
+ * @param $source {'ditto'; string} - Плэйсходлер, содержащий одномерный массив со строками исходных данных. Default: 'ditto'.
+ * @param $dittoId {integer} - Уникальный ID сессии Ditto. Default: ''.
  * 
  * @copyright 2014, DivanDesign
  * http://www.DivanDesign.biz
@@ -67,7 +67,7 @@ if ($rowsTotal > 0){
 	if ($rowsMin){
 		//Количество колонок при минимальном количестве строк
 		$colsWithRowMin = ceil($rowsTotal / $rowsMin);
-	
+		
 		//Если это количество меньше заданного
 		if ($colsWithRowMin < $columnsNumber){
 			//Тогда элементов в колонке будет меньше заданного (логика)
