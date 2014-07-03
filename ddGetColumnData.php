@@ -15,6 +15,7 @@
  * @param $columnTpl {string: chunkName} - Шаблон колонки. Доступные плэйсхолдеры: [+wrapper+]. @required
  * @param $columnLastTpl {string: chunkName} - Шаблон последней колонки. Доступные плэйсхолдеры: [+wrapper+]. Default: = $columnTpl.
  * @param $outerTpl {string: chunkName} - Шаблон внешней обёртки. Доступные плэйсхолдеры: [+wrapper+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: —.
+ * @param $source {'ditto'; string} - Плейсходлер, содержащий одномерный массив со строками исходных данных. Default: 'ditto'.
  * @param $dittoId {integer} - Унакальный ID сессии Ditto. Default: ''.
  * 
  * @copyright 2014, DivanDesign
@@ -29,13 +30,33 @@ $rowsMin = isset($rowsMin) ? intval($rowsMin) : 0;
 $orderBy = isset($orderBy) ? $orderBy : 'column';
 //Если шаблон последней колонки, не задан — будет как и все
 $columnLastTpl = isset($columnLastTpl) ? $columnLastTpl : $columnTpl;
-//ID сессии Ditto
-$dittoId = isset($dittoId) ? $dittoId.'_' : '';
-//Получаем необходимые результаты дитто
-$dittoRes = $modx->getPlaceholder($dittoId.'ditto_resource');
+//Источник
+$source = isset($source) ? $source : 'ditto';
+
+$rowsTotal = 0;
+
+if (strtolower($source) == 'ditto'){
+	//ID сессии Ditto
+	$dittoId = isset($dittoId) ? $dittoId.'_' : '';
+	
+	//Получаем необходимые результаты дитто
+	if ($dittoRes = $modx->getPlaceholder($dittoId.'ditto_resource')){
+		$source = array();
+		
+		foreach ($dittoRes as $key => $val){
+			$source[] = $modx->getPlaceholder($dittoId.'item['.$key.']');
+		}
+	}
+}else{
+	$source = $modx->getPlaceholder($source);
+	
+	if (!is_array($source)){
+		$source = array();
+	}
+}
 
 //Всего строк
-$rowsTotal = count($dittoRes);
+$rowsTotal = count($source);
 
 //Если что-то есть
 if ($rowsTotal > 0){
@@ -63,25 +84,17 @@ if ($rowsTotal > 0){
 		$i = 0;
 		
 		//Пробегаемся по результатам
-		foreach ($dittoRes as $key => $val){
+		foreach ($source as $val){
 			//Запоминаем уже готовые отпаршенные значения в нужную колонку
-			$res[$i][] = $modx->getPlaceholder($dittoId.'item['.$key.']');
+			$res[$i][] = $val;
 			
 			$i++;
 			if ($i == $columnsNumber){$i = 0;}
 		}
 	//В противном случае по колонкам
 	}else{
-		$res = array();
-	
-		//Пробегаемся по результатам
-		foreach ($dittoRes as $key => $val){
-			//Запоминаем уже готовые отпаршенные значения
-			$res[] = $modx->getPlaceholder($dittoId.'item['.$key.']');
-		}
-		
 		//Просто разбиваем массив на части, сохраняя оригинальную нумерацию
-		$res = array_chunk($res, $elementsInColumnNumber);
+		$res = array_chunk($source, $elementsInColumnNumber);
 	}
 	
 	$result = '';
