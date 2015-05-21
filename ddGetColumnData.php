@@ -1,24 +1,24 @@
 <?php
 /**
  * ddGetColumnData.php
- * @version 3.4 (2014-07-03)
+ * @version 4.0 (2015-05-21)
  * 
- * @desc Выводит результаты Ditto в несколько колонок, стараясь равномерно распределить количество.
+ * @desc Выводит элементы (например, результаты Ditto) в несколько колонок, стараясь равномерно распределить количество.
  * 
  * @note Сниппет берёт результаты Ditto из плэйсхолдера, так что перед его вызовом необходимо вызывать Ditto с параметром «save» == 3.
  * 
  * @uses Сниппет Ditto 2.1.
  * 
  * @param $columnsNumber {integer} - Количество колонок. Default: 1.
- * @param $rowsMin {integer} - Минимальное количество строк в одной колонке (0 — любое). Default: 0;
+ * @param $rowsMin {integer} - Минимальное количество строк в одной колонке (0 — любое). Default: 0.
  * @param $orderBy {'column'; 'row'} - Порядок элементов: 'column' - сначала заполняется первая колонка, потом вторая и т.д. ([[1, 2, 3] [4, 5, 6] [7, 8, 9]]); 'row' - элементы располагаются по срокам ([[1, 4, 7] [2, 5, 8] [3, 6, 9]]). Default: 'column'.
  * @param $columnTpl {string: chunkName} - Шаблон колонки. Доступные плэйсхолдеры: [+rows+]. @required
  * @param $columnLastTpl {string: chunkName} - Шаблон последней колонки. Доступные плэйсхолдеры: [+rows+]. Default: = $columnTpl.
  * @param $outerTpl {string: chunkName} - Шаблон внешней обёртки. Доступные плэйсхолдеры: [+result+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: —.
- * @param $source {'ditto'; string} - Плэйсходлер, содержащий одномерный массив со строками исходных данных. Default: 'ditto'.
+ * @param $source {'ditto'; string} - Плэйсходлер (элемент массива «$modx->placeholders»), содержащий одномерный массив со строками исходных данных. Default: 'ditto'.
  * @param $dittoId {integer} - Уникальный ID сессии Ditto. Default: ''.
  * 
- * @copyright 2014, DivanDesign
+ * @copyright 2015, DivanDesign
  * http://www.DivanDesign.biz
  */
 
