@@ -117,8 +117,8 @@ if ($rowsTotal > 0){
 	
 	//Перебираем колонки
 	while ($i < $columnsNumber){
-		//Выбираем нужный шаблон
-		if ($i == $columnsNumber - 1){
+		//Выбираем нужный шаблон (если колонка последняя, но не единственная)
+		if ($columnsNumber > 1 && $i == $columnsNumber - 1){
 			$tpl = $columnLastTpl;
 		}else{
 			$tpl = $columnTpl;
