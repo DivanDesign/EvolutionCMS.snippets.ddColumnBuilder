@@ -12,7 +12,7 @@
  * @param $columnsNumber {integer} - Количество колонок. Default: 1.
  * @param $rowsMin {integer} - Минимальное количество строк в одной колонке (0 — любое). Default: 0.
  * @param $orderBy {'column'; 'row'} - Порядок элементов: 'column' - сначала заполняется первая колонка, потом вторая и т.д. ([[1, 2, 3] [4, 5, 6] [7, 8, 9]]); 'row' - элементы располагаются по срокам ([[1, 4, 7] [2, 5, 8] [3, 6, 9]]). Default: 'column'.
- * @param $columnTpl {string: chunkName} - Шаблон колонки. Доступные плэйсхолдеры: [+rows+]. @required
+ * @param $columnTpl {string: chunkName} - Шаблон колонки. Доступные плэйсхолдеры: [+rows+], [+columnNumber+] (порядковый номер колонки). @required
  * @param $columnLastTpl {string: chunkName} - Шаблон последней колонки. Доступные плэйсхолдеры: [+rows+]. Default: = $columnTpl.
  * @param $outerTpl {string: chunkName} - Шаблон внешней обёртки. Доступные плэйсхолдеры: [+result+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: —.
  * @param $source {'ditto'; string} - Плэйсходлер (элемент массива «$modx->placeholders»), содержащий одномерный массив со строками исходных данных. Default: 'ditto'.
@@ -125,7 +125,11 @@ if ($rowsTotal > 0){
 		}
 		
 		//Парсим колонку
-		$result .= $modx->parseChunk($tpl, array('rows' => implode('', $res[$i])),'[+','+]');
+		$result .= $modx->parseChunk($tpl, array(
+			'rows' => implode('', $res[$i]),
+			//Порядковый номер колонки
+			'columnNumber' => $i + 1
+		),'[+','+]');
 		$i++;
 	}
 	
