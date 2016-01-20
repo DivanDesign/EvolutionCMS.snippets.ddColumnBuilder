@@ -15,6 +15,7 @@
  * @param $columnTpl {string: chunkName} - Шаблон колонки. Доступные плэйсхолдеры: [+rows+], [+columnNumber+] (порядковый номер колонки). @required
  * @param $columnLastTpl {string: chunkName} - Шаблон последней колонки. Доступные плэйсхолдеры: [+rows+]. Default: = $columnTpl.
  * @param $outerTpl {string: chunkName} - Шаблон внешней обёртки. Доступные плэйсхолдеры: [+result+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: —.
+ * @param $placeholders {separated string} - Additional data for parsed result chunk. Format: separated string with '::' for pair key-value and '||' between pairs. Default: ''.
  * @param $source {'ditto'; string} - Плэйсходлер (элемент массива «$modx->placeholders»), содержащий одномерный массив со строками исходных данных. Default: 'ditto'.
  * @param $dittoId {integer} - Уникальный ID сессии Ditto. Default: ''.
  * 
@@ -135,6 +136,14 @@ if ($rowsTotal > 0){
 	
 	if (isset($outerTpl)){
 		$result = $modx->parseChunk($outerTpl, array('result' => $result, 'columnsNumber' => $columnsNumber), '[+', '+]');
+	}
+	
+	//Если переданы дополнительные данные
+	if (isset($placeholders)){
+		//Разбиваем их
+		$placeholders = ddTools::explodeAssoc($placeholders);
+		//Парсим
+		$result = ddTools::parseText($result, $placeholders);
 	}
 	
 	return $result;
