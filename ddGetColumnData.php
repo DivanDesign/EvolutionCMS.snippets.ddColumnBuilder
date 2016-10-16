@@ -1,26 +1,31 @@
 <?php
 /**
  * ddGetColumnData.php
- * @version 4.0 (2015-05-21)
+ * @version 4.1 (2016-10-16)
  * 
  * @desc Выводит элементы (например, результаты Ditto) в несколько колонок, стараясь равномерно распределить количество.
  * 
- * @note Сниппет берёт результаты Ditto из плэйсхолдера, так что перед его вызовом необходимо вызывать Ditto с параметром «save» == 3.
+ * @note Сниппет берёт результаты Ditto (2.1) из плэйсхолдера, так что перед его вызовом необходимо вызывать Ditto с параметром «save» == 3.
  * 
- * @uses Сниппет Ditto 2.1.
+ * @uses PHP >= 5.4.
+ * @uses MODXEvo >= 1.1.
+ * @uses The library modx.ddTools 0.15.4.
  * 
- * @param $columnsNumber {integer} - Количество колонок. Default: 1.
- * @param $rowsMin {integer} - Минимальное количество строк в одной колонке (0 — любое). Default: 0.
- * @param $orderBy {'column'; 'row'} - Порядок элементов: 'column' - сначала заполняется первая колонка, потом вторая и т.д. ([[1, 2, 3] [4, 5, 6] [7, 8, 9]]); 'row' - элементы располагаются по срокам ([[1, 4, 7] [2, 5, 8] [3, 6, 9]]). Default: 'column'.
- * @param $columnTpl {string: chunkName} - Шаблон колонки. Доступные плэйсхолдеры: [+rows+]. @required
- * @param $columnLastTpl {string: chunkName} - Шаблон последней колонки. Доступные плэйсхолдеры: [+rows+]. Default: = $columnTpl.
- * @param $outerTpl {string: chunkName} - Шаблон внешней обёртки. Доступные плэйсхолдеры: [+result+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: —.
- * @param $source {'ditto'; string} - Плэйсходлер (элемент массива «$modx->placeholders»), содержащий одномерный массив со строками исходных данных. Default: 'ditto'.
- * @param $dittoId {integer} - Уникальный ID сессии Ditto. Default: ''.
+ * @param $columnsNumber {integer} — Количество колонок. Default: 1.
+ * @param $rowsMin {integer} — Минимальное количество строк в одной колонке (0 — любое). Default: 0.
+ * @param $orderBy {'column'|'row'} — Порядок элементов: 'column' — сначала заполняется первая колонка, потом вторая и т.д. ([[1, 2, 3], [4, 5, 6], [7, 8, 9]]); 'row' — элементы располагаются по срокам ([[1, 4, 7], [2, 5, 8], [3, 6, 9]]). Default: 'column'.
+ * @param $columnTpl {string_chunkName|string} — Шаблон колонки (чанк или строка, начинающаяся с «@CODE:»). Доступные плэйсхолдеры: [+rows+], [+columnNumber+] (порядковый номер колонки). @required
+ * @param $columnLastTpl {string_chunkName|string} — Шаблон последней колонки (чанк или строка, начинающаяся с «@CODE:»). Доступные плэйсхолдеры: [+rows+]. Default: = $columnTpl.
+ * @param $outerTpl {string_chunkName|string} — Шаблон внешней обёртки (чанк или строка, начинающаяся с «@CODE:»). Доступные плэйсхолдеры: [+result+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: '@CODE:[+result+]'.
+ * @param $placeholders {string_queryString} — Additional data as query string {@link https://en.wikipedia.org/wiki/Query_string } has to be passed into the result string. E. g. “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Arrays are supported too: “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”. Default: ''.
+ * @param $source {string|'ditto'} — Плэйсходлер (элемент массива «$modx->placeholders»), содержащий одномерный массив со строками исходных данных. Default: 'ditto'.
+ * @param $dittoId {integer} — Уникальный ID сессии Ditto. Default: ''.
  * 
- * @copyright 2015, DivanDesign
- * http://www.DivanDesign.biz
+ * @copyright 2010–2016 DivanDesign {@link http://www.DivanDesign.biz }
  */
+
+//Подключаем modx.ddTools
+require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
 
 //Количество колонок
 $columnsNumber = (isset($columnsNumber) && is_numeric($columnsNumber) && $columnsNumber > 0) ? $columnsNumber : 1;
@@ -41,7 +46,7 @@ if (strtolower($source) == 'ditto'){
 	
 	//Получаем необходимые результаты дитто
 	if ($dittoRes = $modx->getPlaceholder($dittoId.'ditto_resource')){
-		$source = array();
+		$source = [];
 		
 		foreach ($dittoRes as $key => $val){
 			$source[] = $modx->getPlaceholder($dittoId.'item['.$key.']');
@@ -51,7 +56,7 @@ if (strtolower($source) == 'ditto'){
 	$source = $modx->getPlaceholder($source);
 	
 	if (!is_array($source)){
-		$source = array();
+		$source = [];
 	}
 }
 
@@ -79,7 +84,7 @@ if ($rowsTotal > 0){
 	
 	//Если сортировка по строкам
 	if ($orderBy == 'row'){
-		$res = array_fill(0, $columnsNumber, array());
+		$res = array_fill(0, $columnsNumber, []);
 		
 		$i = 0;
 		
@@ -93,7 +98,7 @@ if ($rowsTotal > 0){
 		}
 	//В противном случае по колонкам
 	}else{
-		$res = array();
+		$res = [];
 		
 		//Проходка по кол-ву колонок-1
 		for ($i = 1; $i < $columnsNumber; $i++){ 
@@ -125,12 +130,33 @@ if ($rowsTotal > 0){
 		}
 		
 		//Парсим колонку
-		$result .= $modx->parseChunk($tpl, array('rows' => implode('', $res[$i])),'[+','+]');
+		$result .= ddTools::parseText($modx->getTpl($tpl), [
+			'rows' => implode('', $res[$i]),
+			//Порядковый номер колонки
+			'columnNumber' => $i + 1
+		]);
 		$i++;
 	}
 	
 	if (isset($outerTpl)){
-		$result = $modx->parseChunk($outerTpl, array('result' => $result, 'columnsNumber' => $columnsNumber), '[+', '+]');
+		$result = ddTools::parseText($modx->getTpl($outerTpl), [
+			'result' => $result,
+			'columnsNumber' => $columnsNumber
+		]);
+	}
+	
+	//Если переданы дополнительные данные
+	if (isset($placeholders)){
+		//Parse a query string
+		parse_str($placeholders, $placeholders);
+		//Корректно инициализируем при необходимости
+		if (is_array($placeholders)){
+			//Unfold for arrays support (e. g. “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”)
+			$placeholders = ddTools::unfoldArray($placeholders);
+			
+			//Парсим
+			$result = ddTools::parseText($result, $placeholders);
+		}
 	}
 	
 	return $result;
