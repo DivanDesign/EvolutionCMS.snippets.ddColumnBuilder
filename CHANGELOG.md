@@ -1,4 +1,12 @@
 # ddGetColumnData changelog
+## Version 4.1 (2016-10-16)
+* \+ The “[+columnNumber+]” placeholder is avaliable now in “columnTpl”.
+* \+ Added an ability to pass additional data into the “outerTpl” template (see the “placeholders” parameter).
+* \+ Added support of the “@CODE:” keyword prefix in the snippet templates.
+* \* Short array syntax is used because it's more convenient.
+* \* Attention! PHP >= 5.4 is required.
+* \* Attention! MODXEvo >= 1.1 is required.
+
 ## Version 4.0 (2015-05-21)
 * \* Если колонка последняя, но при этом единственная — используется шаблон «$columnTpl».
 * \* Плэйсхолдер «[+wrapper+]» в шаблоне «$outerTpl» переименован в «[+result+]».
