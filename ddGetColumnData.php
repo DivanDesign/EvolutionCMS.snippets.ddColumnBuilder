@@ -16,7 +16,7 @@
  * @param $columnTpl {string_chunkName} — Шаблон колонки. Доступные плэйсхолдеры: [+rows+], [+columnNumber+] (порядковый номер колонки). @required
  * @param $columnLastTpl {string_chunkName} — Шаблон последней колонки. Доступные плэйсхолдеры: [+rows+]. Default: = $columnTpl.
  * @param $outerTpl {string_chunkName} — Шаблон внешней обёртки. Доступные плэйсхолдеры: [+result+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: —.
- * @param $placeholders {separated string} — Additional data for parsed result chunk. Format: separated string with '::' for pair key-value and '||' between pairs. Default: ''.
+ * @param $placeholders {string_queryString} — Additional data as query string {@link https://en.wikipedia.org/wiki/Query_string } has to be passed into the result string. E. g. “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Arrays are supported too: “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”. Default: ''.
  * @param $source {string|'ditto'} — Плэйсходлер (элемент массива «$modx->placeholders»), содержащий одномерный массив со строками исходных данных. Default: 'ditto'.
  * @param $dittoId {integer} — Уникальный ID сессии Ditto. Default: ''.
  * 
@@ -143,12 +143,19 @@ if ($rowsTotal > 0){
 	
 	//Если переданы дополнительные данные
 	if (isset($placeholders)){
-		//Подключаем modx.ddTools
-		require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
-		//Разбиваем их
-		$placeholders = ddTools::explodeAssoc($placeholders);
-		//Парсим
-		$result = ddTools::parseText($result, $placeholders);
+		//Parse a query string
+		parse_str($placeholders, $placeholders);
+		//Корректно инициализируем при необходимости
+		if (is_array($placeholders)){
+			//Подключаем modx.ddTools
+			require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
+			
+			//Unfold for arrays support (e. g. “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”)
+			$placeholders = ddTools::unfoldArray($placeholders);
+			
+			//Парсим
+			$result = ddTools::parseText($result, $placeholders);
+		}
 	}
 	
 	return $result;
