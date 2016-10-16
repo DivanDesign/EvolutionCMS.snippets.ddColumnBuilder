@@ -5,22 +5,19 @@
  * 
  * @desc Выводит элементы (например, результаты Ditto) в несколько колонок, стараясь равномерно распределить количество.
  * 
- * @note Сниппет берёт результаты Ditto из плэйсхолдера, так что перед его вызовом необходимо вызывать Ditto с параметром «save» == 3.
+ * @note Сниппет берёт результаты Ditto (2.1) из плэйсхолдера, так что перед его вызовом необходимо вызывать Ditto с параметром «save» == 3.
  * 
- * @uses Сниппет Ditto 2.1.
+ * @param $columnsNumber {integer} — Количество колонок. Default: 1.
+ * @param $rowsMin {integer} — Минимальное количество строк в одной колонке (0 — любое). Default: 0.
+ * @param $orderBy {'column'|'row'} — Порядок элементов: 'column' — сначала заполняется первая колонка, потом вторая и т.д. ([[1, 2, 3], [4, 5, 6], [7, 8, 9]]); 'row' — элементы располагаются по срокам ([[1, 4, 7], [2, 5, 8], [3, 6, 9]]). Default: 'column'.
+ * @param $columnTpl {string_chunkName} — Шаблон колонки. Доступные плэйсхолдеры: [+rows+], [+columnNumber+] (порядковый номер колонки). @required
+ * @param $columnLastTpl {string_chunkName} — Шаблон последней колонки. Доступные плэйсхолдеры: [+rows+]. Default: = $columnTpl.
+ * @param $outerTpl {string_chunkName} — Шаблон внешней обёртки. Доступные плэйсхолдеры: [+result+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: —.
+ * @param $placeholders {separated string} — Additional data for parsed result chunk. Format: separated string with '::' for pair key-value and '||' between pairs. Default: ''.
+ * @param $source {string|'ditto'} — Плэйсходлер (элемент массива «$modx->placeholders»), содержащий одномерный массив со строками исходных данных. Default: 'ditto'.
+ * @param $dittoId {integer} — Уникальный ID сессии Ditto. Default: ''.
  * 
- * @param $columnsNumber {integer} - Количество колонок. Default: 1.
- * @param $rowsMin {integer} - Минимальное количество строк в одной колонке (0 — любое). Default: 0.
- * @param $orderBy {'column'; 'row'} - Порядок элементов: 'column' - сначала заполняется первая колонка, потом вторая и т.д. ([[1, 2, 3] [4, 5, 6] [7, 8, 9]]); 'row' - элементы располагаются по срокам ([[1, 4, 7] [2, 5, 8] [3, 6, 9]]). Default: 'column'.
- * @param $columnTpl {string: chunkName} - Шаблон колонки. Доступные плэйсхолдеры: [+rows+], [+columnNumber+] (порядковый номер колонки). @required
- * @param $columnLastTpl {string: chunkName} - Шаблон последней колонки. Доступные плэйсхолдеры: [+rows+]. Default: = $columnTpl.
- * @param $outerTpl {string: chunkName} - Шаблон внешней обёртки. Доступные плэйсхолдеры: [+result+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: —.
- * @param $placeholders {separated string} - Additional data for parsed result chunk. Format: separated string with '::' for pair key-value and '||' between pairs. Default: ''.
- * @param $source {'ditto'; string} - Плэйсходлер (элемент массива «$modx->placeholders»), содержащий одномерный массив со строками исходных данных. Default: 'ditto'.
- * @param $dittoId {integer} - Уникальный ID сессии Ditto. Default: ''.
- * 
- * @copyright 2015, DivanDesign
- * http://www.DivanDesign.biz
+ * @copyright 2010–2016 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 //Количество колонок
@@ -135,7 +132,10 @@ if ($rowsTotal > 0){
 	}
 	
 	if (isset($outerTpl)){
-		$result = $modx->parseChunk($outerTpl, array('result' => $result, 'columnsNumber' => $columnsNumber), '[+', '+]');
+		$result = $modx->parseChunk($outerTpl, array(
+			'result' => $result,
+			'columnsNumber' => $columnsNumber
+		), '[+', '+]');
 	}
 	
 	//Если переданы дополнительные данные
