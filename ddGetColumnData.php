@@ -7,6 +7,7 @@
  * 
  * @note Сниппет берёт результаты Ditto (2.1) из плэйсхолдера, так что перед его вызовом необходимо вызывать Ditto с параметром «save» == 3.
  * 
+ * @uses PHP >= 5.4.
  * @uses The library modx.ddTools 0.15.4.
  * 
  * @param $columnsNumber {integer} — Количество колонок. Default: 1.
@@ -41,7 +42,7 @@ if (strtolower($source) == 'ditto'){
 	
 	//Получаем необходимые результаты дитто
 	if ($dittoRes = $modx->getPlaceholder($dittoId.'ditto_resource')){
-		$source = array();
+		$source = [];
 		
 		foreach ($dittoRes as $key => $val){
 			$source[] = $modx->getPlaceholder($dittoId.'item['.$key.']');
@@ -51,7 +52,7 @@ if (strtolower($source) == 'ditto'){
 	$source = $modx->getPlaceholder($source);
 	
 	if (!is_array($source)){
-		$source = array();
+		$source = [];
 	}
 }
 
@@ -79,7 +80,7 @@ if ($rowsTotal > 0){
 	
 	//Если сортировка по строкам
 	if ($orderBy == 'row'){
-		$res = array_fill(0, $columnsNumber, array());
+		$res = array_fill(0, $columnsNumber, []);
 		
 		$i = 0;
 		
@@ -93,7 +94,7 @@ if ($rowsTotal > 0){
 		}
 	//В противном случае по колонкам
 	}else{
-		$res = array();
+		$res = [];
 		
 		//Проходка по кол-ву колонок-1
 		for ($i = 1; $i < $columnsNumber; $i++){ 
@@ -125,19 +126,19 @@ if ($rowsTotal > 0){
 		}
 		
 		//Парсим колонку
-		$result .= $modx->parseChunk($tpl, array(
+		$result .= $modx->parseChunk($tpl, [
 			'rows' => implode('', $res[$i]),
 			//Порядковый номер колонки
 			'columnNumber' => $i + 1
-		),'[+','+]');
+		],'[+','+]');
 		$i++;
 	}
 	
 	if (isset($outerTpl)){
-		$result = $modx->parseChunk($outerTpl, array(
+		$result = $modx->parseChunk($outerTpl, [
 			'result' => $result,
 			'columnsNumber' => $columnsNumber
-		), '[+', '+]');
+		], '[+', '+]');
 	}
 	
 	//Если переданы дополнительные данные
