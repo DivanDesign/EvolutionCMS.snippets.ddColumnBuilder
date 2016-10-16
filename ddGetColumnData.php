@@ -7,6 +7,8 @@
  * 
  * @note Сниппет берёт результаты Ditto (2.1) из плэйсхолдера, так что перед его вызовом необходимо вызывать Ditto с параметром «save» == 3.
  * 
+ * @uses The library modx.ddTools 0.15.4.
+ * 
  * @param $columnsNumber {integer} — Количество колонок. Default: 1.
  * @param $rowsMin {integer} — Минимальное количество строк в одной колонке (0 — любое). Default: 0.
  * @param $orderBy {'column'|'row'} — Порядок элементов: 'column' — сначала заполняется первая колонка, потом вторая и т.д. ([[1, 2, 3], [4, 5, 6], [7, 8, 9]]); 'row' — элементы располагаются по срокам ([[1, 4, 7], [2, 5, 8], [3, 6, 9]]). Default: 'column'.
@@ -140,6 +142,8 @@ if ($rowsTotal > 0){
 	
 	//Если переданы дополнительные данные
 	if (isset($placeholders)){
+		//Подключаем modx.ddTools
+		require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
 		//Разбиваем их
 		$placeholders = ddTools::explodeAssoc($placeholders);
 		//Парсим
