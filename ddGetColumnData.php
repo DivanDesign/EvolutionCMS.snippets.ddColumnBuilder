@@ -1,6 +1,6 @@
 <?php
 /**
- * ddGetColumnData.php
+ * ddGetColumnData
  * @version 4.1 (2016-10-16)
  * 
  * @desc Выводит элементы (например, результаты Ditto) в несколько колонок, стараясь равномерно распределить количество.
@@ -9,7 +9,7 @@
  * 
  * @uses PHP >= 5.4.
  * @uses MODXEvo >= 1.1.
- * @uses The library modx.ddTools 0.15.4.
+ * @uses MODXEvo.library.ddTools >= 0.15.4.
  * 
  * @param $columnsNumber {integer} — Количество колонок. Default: 1.
  * @param $rowsMin {integer} — Минимальное количество строк в одной колонке (0 — любое). Default: 0.
