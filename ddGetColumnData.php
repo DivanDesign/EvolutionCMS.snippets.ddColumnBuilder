@@ -19,6 +19,7 @@
  * @param $outerTpl {string_chunkName|string} — Шаблон внешней обёртки (чанк или строка, начинающаяся с «@CODE:»). Доступные плэйсхолдеры: [+result+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: '@CODE:[+result+]'.
  * @param $placeholders {string_queryString} — Additional data as query string {@link https://en.wikipedia.org/wiki/Query_string } has to be passed into the result string. E. g. “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Arrays are supported too: “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”. Default: ''.
  * @param $source {string|'ditto'} — Плэйсходлер (элемент массива «$modx->placeholders»), содержащий одномерный массив со строками исходных данных. Default: 'ditto'.
+ * @param $sourceDelimiter {string} — Разделитель поступившей строки. Default: ''.
  * @param $dittoId {integer} — Уникальный ID сессии Ditto. Default: ''.
  * 
  * @copyright 2010–2016 DivanDesign {@link http://www.DivanDesign.biz }
@@ -40,25 +41,33 @@ $source = isset($source) ? $source : 'ditto';
 
 $rowsTotal = 0;
 
-if (strtolower($source) == 'ditto'){
-	//ID сессии Ditto
-	$dittoId = isset($dittoId) ? $dittoId.'_' : '';
-	
-	//Получаем необходимые результаты дитто
-	if ($dittoRes = $modx->getPlaceholder($dittoId.'ditto_resource')){
-		$source = [];
+if (!isset($sourceDelimiter)){
+	//TODO: Избавиться от этого, в топку модх плейсхолдеры, надо просто сюда пихать массив
+	//TODO: Сменить название сниппета
+	//TODO: Выпустить новую версию
+	if (strtolower($source) == 'ditto'){
+		//ID сессии Ditto
+		$dittoId = isset($dittoId) ? $dittoId.'_' : '';
 		
-		foreach ($dittoRes as $key => $val){
-			$source[] = $modx->getPlaceholder($dittoId.'item['.$key.']');
+		//Получаем необходимые результаты дитто
+		if ($dittoRes = $modx->getPlaceholder($dittoId.'ditto_resource')){
+			$source = [];
+			
+			foreach ($dittoRes as $key => $val){
+				$source[] = $modx->getPlaceholder($dittoId.'item['.$key.']');
+			}
+		}
+	}else{
+		$source = $modx->getPlaceholder($source);
+		
+		if (!is_array($source)){
+			$source = [];
 		}
 	}
 }else{
-	$source = $modx->getPlaceholder($source);
-	
-	if (!is_array($source)){
-		$source = [];
-	}
+	$source = explode($sourceDelimiter, $source);
 }
+
 
 //Всего строк
 $rowsTotal = count($source);
