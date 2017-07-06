@@ -47,72 +47,72 @@ $itemsTotal = count($source_items);
 //Если что-то есть
 if ($itemsTotal > 0){
 	//Количество элементов в колонке (общее количество элементов / количество колонок) 
-	$elementsInColumnNumber = ceil($itemsTotal / $columnsNumber);
+	$itemsNumberInColumn = ceil($itemsTotal / $columnsNumber);
 	
 	//Если задано минимальное количество строк в колонке
 	if ($minItemsInColumn){
 		//Количество колонок при минимальном количестве строк
-		$colsWithRowMin = ceil($itemsTotal / $minItemsInColumn);
+		$columnsNumberWithMinRows = ceil($itemsTotal / $minItemsInColumn);
 		
 		//Если это количество меньше заданного
-		if ($colsWithRowMin < $columnsNumber){
+		if ($columnsNumberWithMinRows < $columnsNumber){
 			//Тогда элементов в колонке будет меньше заданного (логика)
-			$elementsInColumnNumber = $minItemsInColumn;
+			$itemsNumberInColumn = $minItemsInColumn;
 			//И колонок тоже
-			$columnsNumber = $colsWithRowMin;
+			$columnsNumber = $columnsNumberWithMinRows;
 		}
 	}
 	
 	//Если сортировка по строкам
 	if ($orderBy == 'row'){
-		$res = array_fill(0, $columnsNumber, []);
+		$resultArray = array_fill(0, $columnsNumber, []);
 		
 		$i = 0;
 		
 		//Пробегаемся по результатам
 		foreach ($source_items as $val){
 			//Запоминаем уже готовые отпаршенные значения в нужную колонку
-			$res[$i][] = $val;
+			$resultArray[$i][] = $val;
 			
 			$i++;
 			if ($i == $columnsNumber){$i = 0;}
 		}
 	//В противном случае по колонкам
 	}else{
-		$res = [];
+		$resultArray = [];
 		
 		//Проходка по кол-ву колонок-1
 		for ($i = 1; $i < $columnsNumber; $i++){ 
 			//Заполняем колонку нужным кол-вом
-			$res[] = array_splice($source_items, 0, $elementsInColumnNumber);
+			$resultArray[] = array_splice($source_items, 0, $itemsNumberInColumn);
 			//Пересчет кол-ва в колонке для оставшегося кол-ва элементов и колонок
-			$elementsInColumnNumber = ceil(count($source_items) / ($columnsNumber - $i));
+			$itemsNumberInColumn = ceil(count($source_items) / ($columnsNumber - $i));
 		}
 		
 		//Последняя колонка с остатком
-		$res[] = $source_items;
+		$resultArray[] = $source_items;
 	}
 	
 	$result = '';
 	$i = 0;
 	
 	//Проверим на всякий случай. Вылет бывает, когда указываешь 2 колонки, а Ditto возвращает один элемент (который на 2 колонки не разделить).
-	if ($columnsNumber > count($res)){
-		$columnsNumber = count($res);
+	if ($columnsNumber > count($resultArray)){
+		$columnsNumber = count($resultArray);
 	}
 	
 	//Перебираем колонки
 	while ($i < $columnsNumber){
 		//Выбираем нужный шаблон (если колонка последняя, но не единственная)
 		if ($columnsNumber > 1 && $i == $columnsNumber - 1){
-			$tpl = $tpls_columnLast;
+			$columnTpl = $tpls_columnLast;
 		}else{
-			$tpl = $tpls_column;
+			$columnTpl = $tpls_column;
 		}
 		
 		//Парсим колонку
-		$result .= ddTools::parseText($tpl, [
-			'items' => implode('', $res[$i]),
+		$result .= ddTools::parseText($columnTpl, [
+			'items' => implode('', $resultArray[$i]),
 			//Порядковый номер колонки
 			'columnNumber' => $i + 1
 		]);
