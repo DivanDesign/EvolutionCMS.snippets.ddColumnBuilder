@@ -16,7 +16,7 @@
  * @param $columnsNumber {integer} — Количество колонок. Default: 1.
  * @param $minItemsInColumn {integer} — Минимальное количество элементов в одной колонке (0 — любое). Default: 0.
  * @param $orderItemsBy {'column'|'row'} — Порядок элементов: 'column' — сначала заполняется первая колонка, потом вторая и т.д. ([[1, 2, 3], [4, 5, 6], [7, 8, 9]]); 'row' — элементы располагаются по срокам ([[1, 4, 7], [2, 5, 8], [3, 6, 9]]). Default: 'column'.
- * @param $tpls_column {string_chunkName|string} — Шаблон колонки (чанк или строка, начинающаяся с «@CODE:»). Доступные плэйсхолдеры: [+items+], [+columnNumber+] (порядковый номер колонки). @required
+ * @param $tpls_column {string_chunkName|string} — Шаблон колонки (чанк или строка, начинающаяся с «@CODE:»). Доступные плэйсхолдеры: [+items+], [+columnNumber+] (порядковый номер колонки). Default: '@CODE:<div>[+items+]</div>'.
  * @param $tpls_columnLast {string_chunkName|string} — Шаблон последней колонки (чанк или строка, начинающаяся с «@CODE:»). Доступные плэйсхолдеры: [+items+]. Default: = $tpls_column.
  * @param $tpls_outer {string_chunkName|string} — Шаблон внешней обёртки (чанк или строка, начинающаяся с «@CODE:»). Доступные плэйсхолдеры: [+result+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: '@CODE:[+result+]'.
  * @param $placeholders {string_queryString} — Additional data as query string {@link https://en.wikipedia.org/wiki/Query_string } has to be passed into the result string. E. g. “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Arrays are supported too: “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”. Default: ''.
@@ -36,8 +36,10 @@ $columnsNumber = (isset($columnsNumber) && is_numeric($columnsNumber) && $column
 $minItemsInColumn = isset($minItemsInColumn) ? intval($minItemsInColumn) : 0;
 //Сортировка между колонками
 $orderBy = isset($orderBy) ? $orderBy : 'column';
+
+$tpls_column = isset($tpls_column) ? $modx->getTpl($tpls_column) : '<div>[+items+]</div>';
 //Если шаблон последней колонки, не задан — будет как и все
-$tpls_columnLast = isset($tpls_columnLast) ? $tpls_columnLast : $tpls_column;
+$tpls_columnLast = isset($tpls_columnLast) ? $modx->getTpl($tpls_columnLast) : $tpls_column;
 
 //Всего строк
 $itemsTotal = count($source_items);
@@ -109,7 +111,7 @@ if ($itemsTotal > 0){
 		}
 		
 		//Парсим колонку
-		$result .= ddTools::parseText($modx->getTpl($tpl), [
+		$result .= ddTools::parseText($tpl, [
 			'items' => implode('', $res[$i]),
 			//Порядковый номер колонки
 			'columnNumber' => $i + 1
