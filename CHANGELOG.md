@@ -1,4 +1,4 @@
-# ddGetColumnData changelog
+# ddColumnBuilder changelog
 ## Version 4.1 (2016-10-16)
 * \+ The “[+columnNumber+]” placeholder is avaliable now in “columnTpl”.
 * \+ Added an ability to pass additional data into the “outerTpl” template (see the “placeholders” parameter).

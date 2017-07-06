@@ -1,6 +1,6 @@
 <?php
 /**
- * ddGetColumnData
+ * ddColumnBuilder
  * @version 4.1 (2016-10-16)
  * 
  * @desc Выводит элементы (например, результаты Ditto) в несколько колонок, стараясь равномерно распределить количество.
@@ -12,7 +12,7 @@
  * @uses MODXEvo.library.ddTools >= 0.20.
  * 
  * @param $source_items {string} — Source items. @required
- * @param $source_itemsDelimiter {string} — Source items delimiter. Default: '<!--ddGetColumnData-->'.
+ * @param $source_itemsDelimiter {string} — Source items delimiter. Default: '<!--ddColumnBuilder-->'.
  * @param $columnsNumber {integer} — Количество колонок. Default: 1.
  * @param $minItemsInColumn {integer} — Минимальное количество элементов в одной колонке (0 — любое). Default: 0.
  * @param $orderItemsBy {'column'|'row'} — Порядок элементов: 'column' — сначала заполняется первая колонка, потом вторая и т.д. ([[1, 2, 3], [4, 5, 6], [7, 8, 9]]); 'row' — элементы располагаются по срокам ([[1, 4, 7], [2, 5, 8], [3, 6, 9]]). Default: 'column'.
@@ -27,7 +27,7 @@
 //Include MODXEvo.library.ddTools
 require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
 
-$source_itemsDelimiter = isset($source_itemsDelimiter) ? $source_itemsDelimiter : '<!--ddGetColumnData-->';
+$source_itemsDelimiter = isset($source_itemsDelimiter) ? $source_itemsDelimiter : '<!--ddColumnBuilder-->';
 $source_items = isset($source_items) ? explode($source_itemsDelimiter, $source_items) : [];
 
 //Количество колонок

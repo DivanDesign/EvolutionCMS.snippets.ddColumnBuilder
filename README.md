@@ -1,2 +1,2 @@
-# ddGetColumnData
+# ddColumnBuilder
 Выводит документы в несколько колонок по заданному шаблону.
