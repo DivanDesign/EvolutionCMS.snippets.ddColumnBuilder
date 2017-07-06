@@ -1,4 +1,22 @@
-# ddGetColumnData changelog
+# ddColumnBuilder changelog
+## Version 5.0 (2017-07-06)
+* \* Snippet is no longer works with MODX placeholders, instead just pass items glued by “source_itemsDelimiter” through the “source_items” parameter.
+* \+ Added JSON format support for the “placeholders” parameter.
+* \- The “dittoId” parameter was removed.
+* \* The following parameters were renamed:
+	* \* “source” → “source_items”.
+	* \* “sourceDelimiter” → “source_itemsDelimiter”.
+	* \* “rowsMin” → “minItemsInColumn”.
+	* \* “orderBy” → “orderItemsBy”.
+	* \* “columnTpl” → “tpls_column”.
+	* \* “columnLastTpl” → “tpls_columnLast”.
+	* \* “outerTpl” → “tpls_outer”.
+* \* The “[+rows+]” placeholder was renamed as “[+items+]”.
+* \* “tpls_column” is no longer required and by default is equal to “<div>[+items+]</div>”.
+* \* Small optimization, refactoring and minor changes.
+* \* Attention! MODXEvo.library.ddTools >= 0.20 is required.
+* \* Attention! Backward compatibility is broken.
+
 ## Version 4.1 (2016-10-16)
 * \+ The “[+columnNumber+]” placeholder is avaliable now in “columnTpl”.
 * \+ Added an ability to pass additional data into the “outerTpl” template (see the “placeholders” parameter).
