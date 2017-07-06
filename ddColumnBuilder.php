@@ -1,24 +1,22 @@
 <?php
 /**
  * ddColumnBuilder
- * @version 4.1 (2016-10-16)
+ * @version 5.0 (2017-07-06)
  * 
- * @desc Выводит элементы (например, результаты Ditto) в несколько колонок, стараясь равномерно распределить количество.
- * 
- * @note Сниппет берёт результаты Ditto (2.1) из плэйсхолдера, так что перед его вызовом необходимо вызывать Ditto с параметром «save» == 3.
+ * @desc Выводит элементы (например: результаты Ditto, ddGetDucuments, ddGetMultipleField и т. п.) в несколько колонок, стараясь равномерно распределить количество.
  * 
  * @uses PHP >= 5.4.
  * @uses MODXEvo >= 1.1.
  * @uses MODXEvo.library.ddTools >= 0.20.
  * 
- * @param $source_items {string} — Source items. @required
- * @param $source_itemsDelimiter {string} — Source items delimiter. Default: '<!--ddColumnBuilder-->'.
- * @param $columnsNumber {integer} — Количество колонок. Default: 1.
- * @param $minItemsInColumn {integer} — Минимальное количество элементов в одной колонке (0 — любое). Default: 0.
- * @param $orderItemsBy {'column'|'row'} — Порядок элементов: 'column' — сначала заполняется первая колонка, потом вторая и т.д. ([[1, 2, 3], [4, 5, 6], [7, 8, 9]]); 'row' — элементы располагаются по срокам ([[1, 4, 7], [2, 5, 8], [3, 6, 9]]). Default: 'column'.
- * @param $tpls_column {string_chunkName|string} — Шаблон колонки (чанк или строка, начинающаяся с «@CODE:»). Доступные плэйсхолдеры: [+items+], [+columnNumber+] (порядковый номер колонки). Default: '@CODE:<div>[+items+]</div>'.
- * @param $tpls_columnLast {string_chunkName|string} — Шаблон последней колонки (чанк или строка, начинающаяся с «@CODE:»). Доступные плэйсхолдеры: [+items+]. Default: = $tpls_column.
- * @param $tpls_outer {string_chunkName|string} — Шаблон внешней обёртки (чанк или строка, начинающаяся с «@CODE:»). Доступные плэйсхолдеры: [+result+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: '@CODE:[+result+]'.
+ * @param $source_items {string} — The source items. @required
+ * @param $source_itemsDelimiter {string} — The source items delimiter. Default: '<!--ddColumnBuilder-->'.
+ * @param $columnsNumber {integer} — The number of columns to return. Default: 1.
+ * @param $minItemsInColumn {integer} — The minimum number of items in one column (0 — any). Default: 0.
+ * @param $orderItemsBy {'column'|'row'} — How to sort items? “column” — first fills up the first column, then second, etc ([[1, 2, 3], [4, 5, 6], [7, 8, 9]]); 'row' — fills up by rows ([[1, 4, 7], [2, 5, 8], [3, 6, 9]]). Default: 'column'.
+ * @param $tpls_column {string_chunkName|string} — The template for column rendering. Use inline templates starting with “@CODE:”. Available placeholders: [+items+], [+columnNumber+] (number of column). Default: '@CODE:<div>[+items+]</div>'.
+ * @param $tpls_columnLast {string_chunkName|string} — The template for last column rendering. Use inline templates starting with “@CODE:”. Available placeholders: [+items+], [+columnNumber+] (number of column). Default: = $tpls_column.
+ * @param $tpls_outer {string_chunkName|string} — Wrapper template. Use inline templates starting with “@CODE:”. Available placeholders: [+result+] (the snippet result), [+columnsNumber+] (the actual number of columns). Default: '@CODE:[+result+]'.
  * @param $placeholders {stirng_json|string_queryFormated} — Additional data as JSON (https://en.wikipedia.org/wiki/JSON) or query string {@link https://en.wikipedia.org/wiki/Query_string } has to be passed into the result string. E. g. `{"width": 800, "height": 600}` or `pladeholder1=value1&pagetitle=My awesome pagetitle!`. Arrays are supported too: “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”. Default: ''.
  * 
  * @copyright 2010–2016 DivanDesign {@link http://www.DivanDesign.biz }
