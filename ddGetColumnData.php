@@ -104,33 +104,45 @@ if ($itemsTotal > 0){
 	//Перебираем колонки
 	while ($i < $columnsNumber){
 		//Выбираем нужный шаблон (если колонка последняя, но не единственная)
-		if ($columnsNumber > 1 && $i == $columnsNumber - 1){
+		if (
+			$columnsNumber > 1 &&
+			$i == $columnsNumber - 1
+		){
 			$columnTpl = $tpls_columnLast;
 		}else{
 			$columnTpl = $tpls_column;
 		}
 		
 		//Парсим колонку
-		$result .= ddTools::parseText($columnTpl, [
-			'items' => implode('', $resultArray[$i]),
-			//Порядковый номер колонки
-			'columnNumber' => $i + 1
-		]);
+		$result .= ddTools::parseText(
+			$columnTpl,
+			[
+				'items' => implode('', $resultArray[$i]),
+				//Порядковый номер колонки
+				'columnNumber' => $i + 1
+			]
+		);
+		
 		$i++;
 	}
 	
 	if (isset($tpls_outer)){
-		$result = ddTools::parseText($modx->getTpl($tpls_outer), [
-			'result' => $result,
-			'columnsNumber' => $columnsNumber
-		]);
+		$result = ddTools::parseText(
+			$modx->getTpl($tpls_outer),
+			[
+				'result' => $result,
+				'columnsNumber' => $columnsNumber
+			]
+		);
 	}
 	
 	//Если переданы дополнительные данные
 	if (isset($placeholders)){
-		$placeholders = ddTools::encodedStringToArray($placeholders);
 		//Парсим
-		$result = ddTools::parseText($result, $placeholders);
+		$result = ddTools::parseText(
+			$result,
+			ddTools::encodedStringToArray($placeholders)
+		);
 	}
 	
 	return $result;
