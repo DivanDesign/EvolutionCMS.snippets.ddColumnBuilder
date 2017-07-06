@@ -9,7 +9,7 @@
  * 
  * @uses PHP >= 5.4.
  * @uses MODXEvo >= 1.1.
- * @uses MODXEvo.library.ddTools >= 0.15.4.
+ * @uses MODXEvo.library.ddTools >= 0.20.
  * 
  * @param $source_items {string} — Source items. @required
  * @param $source_itemsDelimiter {string} — Source items delimiter. Default: '<!--ddGetColumnData-->'.
@@ -19,7 +19,7 @@
  * @param $tpls_column {string_chunkName|string} — Шаблон колонки (чанк или строка, начинающаяся с «@CODE:»). Доступные плэйсхолдеры: [+items+], [+columnNumber+] (порядковый номер колонки). Default: '@CODE:<div>[+items+]</div>'.
  * @param $tpls_columnLast {string_chunkName|string} — Шаблон последней колонки (чанк или строка, начинающаяся с «@CODE:»). Доступные плэйсхолдеры: [+items+]. Default: = $tpls_column.
  * @param $tpls_outer {string_chunkName|string} — Шаблон внешней обёртки (чанк или строка, начинающаяся с «@CODE:»). Доступные плэйсхолдеры: [+result+] (непосредственно результат), [+columnsNumber+] (фактическое количество колонок). Default: '@CODE:[+result+]'.
- * @param $placeholders {string_queryString} — Additional data as query string {@link https://en.wikipedia.org/wiki/Query_string } has to be passed into the result string. E. g. “pladeholder1=value1&pagetitle=My awesome pagetitle!”. Arrays are supported too: “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”. Default: ''.
+ * @param $placeholders {stirng_json|string_queryFormated} — Additional data as JSON (https://en.wikipedia.org/wiki/JSON) or query string {@link https://en.wikipedia.org/wiki/Query_string } has to be passed into the result string. E. g. `{"width": 800, "height": 600}` or `pladeholder1=value1&pagetitle=My awesome pagetitle!`. Arrays are supported too: “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”. Default: ''.
  * 
  * @copyright 2010–2016 DivanDesign {@link http://www.DivanDesign.biz }
  */
@@ -128,16 +128,9 @@ if ($itemsTotal > 0){
 	
 	//Если переданы дополнительные данные
 	if (isset($placeholders)){
-		//Parse a query string
-		parse_str($placeholders, $placeholders);
-		//Корректно инициализируем при необходимости
-		if (is_array($placeholders)){
-			//Unfold for arrays support (e. g. “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”)
-			$placeholders = ddTools::unfoldArray($placeholders);
-			
-			//Парсим
-			$result = ddTools::parseText($result, $placeholders);
-		}
+		$placeholders = ddTools::encodedStringToArray($placeholders);
+		//Парсим
+		$result = ddTools::parseText($result, $placeholders);
 	}
 	
 	return $result;
