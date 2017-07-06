@@ -114,35 +114,35 @@ if ($itemsTotal > 0){
 		}
 		
 		//Парсим колонку
-		$result .= ddTools::parseText(
-			$columnTpl,
-			[
+		$result .= ddTools::parseText([
+			'text' => $columnTpl,
+			'data' => [
 				'items' => implode('', $resultArray[$i]),
 				//Порядковый номер колонки
 				'columnNumber' => $i + 1
 			]
-		);
+		]);
 		
 		$i++;
 	}
 	
 	if (isset($tpls_outer)){
-		$result = ddTools::parseText(
-			$modx->getTpl($tpls_outer),
-			[
+		$result = ddTools::parseText([
+			'text' => $modx->getTpl($tpls_outer),
+			'data' => [
 				'result' => $result,
 				'columnsNumber' => $columnsNumber
 			]
-		);
+		]);
 	}
 	
 	//Если переданы дополнительные данные
 	if (isset($placeholders)){
 		//Парсим
-		$result = ddTools::parseText(
-			$result,
-			ddTools::encodedStringToArray($placeholders)
-		);
+		$result = ddTools::parseText([
+			'text' => $result,
+			'data' => ddTools::encodedStringToArray($placeholders)
+		]);
 	}
 	
 	return $result;
