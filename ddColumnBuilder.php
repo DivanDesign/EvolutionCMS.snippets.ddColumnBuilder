@@ -6,8 +6,8 @@
  * @desc Выводит элементы (например: результаты Ditto, ddGetDucuments, ddGetMultipleField и т. п.) в несколько колонок, стараясь равномерно распределить количество.
  * 
  * @uses PHP >= 5.4.
- * @uses MODXEvo >= 1.1.
- * @uses MODXEvo.library.ddTools >= 0.20.
+ * @uses (MODX)EvolutionCMS >= 1.1.
+ * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.20.
  * 
  * @param $source_items {string} — The source items. @required
  * @param $source_itemsDelimiter {string} — The source items delimiter. Default: '<!--ddColumnBuilder-->'.
@@ -22,14 +22,21 @@
  * @copyright 2010–2016 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
-//Include MODXEvo.library.ddTools
+//Include (MODX)EvolutionCMS.libraries.ddTools
 require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
 
 $source_itemsDelimiter = isset($source_itemsDelimiter) ? $source_itemsDelimiter : '<!--ddColumnBuilder-->';
-$source_items = isset($source_items) ? explode($source_itemsDelimiter, $source_items) : [];
+$source_items = isset($source_items) ? explode(
+	$source_itemsDelimiter,
+	$source_items
+) : [];
 
 //Количество колонок
-$columnsNumber = (isset($columnsNumber) && is_numeric($columnsNumber) && $columnsNumber > 0) ? $columnsNumber : 1;
+$columnsNumber = (
+	isset($columnsNumber) &&
+	is_numeric($columnsNumber) &&
+	$columnsNumber > 0
+) ? $columnsNumber : 1;
 //Минимальное количество строк
 $minItemsInColumn = isset($minItemsInColumn) ? intval($minItemsInColumn) : 0;
 //Сортировка между колонками
@@ -63,7 +70,11 @@ if ($itemsTotal > 0){
 	
 	//Если сортировка по строкам
 	if ($orderBy == 'row'){
-		$resultArray = array_fill(0, $columnsNumber, []);
+		$resultArray = array_fill(
+			0,
+			$columnsNumber,
+			[]
+		);
 		
 		$i = 0;
 		
@@ -80,9 +91,17 @@ if ($itemsTotal > 0){
 		$resultArray = [];
 		
 		//Проходка по кол-ву колонок-1
-		for ($i = 1; $i < $columnsNumber; $i++){ 
+		for (
+			$i = 1;
+			$i < $columnsNumber;
+			$i++
+		){ 
 			//Заполняем колонку нужным кол-вом
-			$resultArray[] = array_splice($source_items, 0, $itemsNumberInColumn);
+			$resultArray[] = array_splice(
+				$source_items,
+				0,
+				$itemsNumberInColumn
+			);
 			//Пересчет кол-ва в колонке для оставшегося кол-ва элементов и колонок
 			$itemsNumberInColumn = ceil(count($source_items) / ($columnsNumber - $i));
 		}
@@ -115,7 +134,10 @@ if ($itemsTotal > 0){
 		$result .= ddTools::parseText([
 			'text' => $columnTpl,
 			'data' => [
-				'items' => implode('', $resultArray[$i]),
+				'items' => implode(
+					'',
+					$resultArray[$i]
+				),
 				//Порядковый номер колонки
 				'columnNumber' => $i + 1
 			]
