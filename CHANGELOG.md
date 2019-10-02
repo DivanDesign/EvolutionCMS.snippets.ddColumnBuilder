@@ -1,6 +1,15 @@
 # ddColumnBuilder changelog
 
 
+## Version 6.0 (2019-10-02)
+* \* Attention! Backward compatibility is broken.
+* \+ `[+itemsTotal+]` placeholder added in `tpls_outer`.
+* \* The following placeholders in `tpls_outer` were renamed:
+	* \* `[+columnsNumber+]` → `[+columnsTotal+]`.
+	* \* `[+result+]` → `[+snippetResult+]`.
+* \* Fixed bug with an empty last column.
+
+
 ## Version 5.0 (2017-07-06)
 * \* Attention! Backward compatibility is broken.
 * \* Attention! MODXEvo.library.ddTools >= 0.20 is required.

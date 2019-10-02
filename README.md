@@ -16,7 +16,7 @@
 Elements → Snippets: Create a new snippet with the following data:
 
 1. Snippet name: `ddColumnBuilder`.
-2. Description: `<b>5.0</b> Выводит элементы (например: результаты Ditto, ddGetDucuments, ddGetMultipleField и т. п.) в несколько колонок, стараясь равномерно распределить количество.`.
+2. Description: `<b>6.0</b> Выводит элементы (например: результаты Ditto, ddGetDucuments, ddGetMultipleField и т. п.) в несколько колонок, стараясь равномерно распределить количество.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddColumnBuilder_snippet` file from the archive.

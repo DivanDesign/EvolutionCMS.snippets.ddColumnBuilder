@@ -1,11 +1,11 @@
 <?php
 /**
  * ddColumnBuilder
- * @version 5.0 (2017-07-06)
+ * @version 6.0 (2019-10-02)
  * 
  * @see README.md
  * 
- * @copyright 2010–2016 DivanDesign {@link http://www.DivanDesign.biz }
+ * @copyright 2010–2019 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 //Include (MODX)EvolutionCMS.libraries.ddTools
