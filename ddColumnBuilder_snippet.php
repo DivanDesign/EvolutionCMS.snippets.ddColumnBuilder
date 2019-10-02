@@ -3,48 +3,62 @@
  * ddColumnBuilder
  * @version 5.0 (2017-07-06)
  * 
- * @desc Выводит элементы (например: результаты Ditto, ddGetDucuments, ddGetMultipleField и т. п.) в несколько колонок, стараясь равномерно распределить количество.
- * 
- * @uses PHP >= 5.4.
- * @uses (MODX)EvolutionCMS >= 1.1.
- * @uses (MODX)EvolutionCMS.libraries.ddTools >= 0.20.
- * 
- * @param $source_items {string} — The source items. @required
- * @param $source_itemsDelimiter {string} — The source items delimiter. Default: '<!--ddColumnBuilder-->'.
- * @param $columnsNumber {integer} — The number of columns to return. Default: 1.
- * @param $minItemsInColumn {integer} — The minimum number of items in one column (0 — any). Default: 0.
- * @param $orderItemsBy {'column'|'row'} — How to sort items? “column” — first fills up the first column, then second, etc ([[1, 2, 3], [4, 5, 6], [7, 8, 9]]); 'row' — fills up by rows ([[1, 4, 7], [2, 5, 8], [3, 6, 9]]). Default: 'column'.
- * @param $tpls_column {string_chunkName|string} — The template for column rendering. Use inline templates starting with “@CODE:”. Available placeholders: [+items+], [+columnNumber+] (number of column). Default: '@CODE:<div>[+items+]</div>'.
- * @param $tpls_columnLast {string_chunkName|string} — The template for last column rendering. Use inline templates starting with “@CODE:”. Available placeholders: [+items+], [+columnNumber+] (number of column). Default: = $tpls_column.
- * @param $tpls_outer {string_chunkName|string} — Wrapper template. Use inline templates starting with “@CODE:”. Available placeholders: [+result+] (the snippet result), [+columnsNumber+] (the actual number of columns). Default: '@CODE:[+result+]'.
- * @param $placeholders {stirng_json|string_queryFormated} — Additional data as JSON (https://en.wikipedia.org/wiki/JSON) or query string {@link https://en.wikipedia.org/wiki/Query_string } has to be passed into the result string. E. g. `{"width": 800, "height": 600}` or `pladeholder1=value1&pagetitle=My awesome pagetitle!`. Arrays are supported too: “some[a]=one&some[b]=two” => “[+some.a+]”, “[+some.b+]”; “some[]=one&some[]=two” => “[+some.0+]”, “[some.1]”. Default: ''.
+ * @see README.md
  * 
  * @copyright 2010–2016 DivanDesign {@link http://www.DivanDesign.biz }
  */
 
 //Include (MODX)EvolutionCMS.libraries.ddTools
-require_once $modx->getConfig('base_path').'assets/libs/ddTools/modx.ddtools.class.php';
+require_once $modx->getConfig('base_path') . 'assets/libs/ddTools/modx.ddtools.class.php';
 
-$source_itemsDelimiter = isset($source_itemsDelimiter) ? $source_itemsDelimiter : '<!--ddColumnBuilder-->';
-$source_items = isset($source_items) ? explode(
-	$source_itemsDelimiter,
-	$source_items
-) : [];
+$source_itemsDelimiter =
+	isset($source_itemsDelimiter) ?
+	$source_itemsDelimiter :
+	'<!--ddColumnBuilder-->'
+;
+$source_items =
+	isset($source_items) ?
+	explode(
+		$source_itemsDelimiter,
+		$source_items
+	) :
+	[]
+;
 
 //Количество колонок
-$columnsNumber = (
-	isset($columnsNumber) &&
-	is_numeric($columnsNumber) &&
-	$columnsNumber > 0
-) ? $columnsNumber : 1;
+$columnsNumber =
+	(
+		isset($columnsNumber) &&
+		is_numeric($columnsNumber) &&
+		$columnsNumber > 0
+	) ?
+	$columnsNumber :
+	1
+;
 //Минимальное количество строк
-$minItemsInColumn = isset($minItemsInColumn) ? intval($minItemsInColumn) : 0;
+$minItemsInColumn =
+	isset($minItemsInColumn) ?
+	intval($minItemsInColumn) :
+	0
+;
 //Сортировка между колонками
-$orderBy = isset($orderBy) ? $orderBy : 'column';
+$orderBy =
+	isset($orderBy) ?
+	$orderBy :
+	'column'
+;
 
-$tpls_column = isset($tpls_column) ? $modx->getTpl($tpls_column) : '<div>[+items+]</div>';
+$tpls_column =
+	isset($tpls_column) ?
+	$modx->getTpl($tpls_column) :
+	'<div>[+items+]</div>'
+;
 //Если шаблон последней колонки, не задан — будет как и все
-$tpls_columnLast = isset($tpls_columnLast) ? $modx->getTpl($tpls_columnLast) : $tpls_column;
+$tpls_columnLast =
+	isset($tpls_columnLast) ?
+	$modx->getTpl($tpls_columnLast) :
+	$tpls_column
+;
 
 //Всего строк
 $itemsTotal = count($source_items);
@@ -79,7 +93,10 @@ if ($itemsTotal > 0){
 		$i = 0;
 		
 		//Пробегаемся по результатам
-		foreach ($source_items as $val){
+		foreach (
+			$source_items as
+			$val
+		){
 			//Запоминаем уже готовые отпаршенные значения в нужную колонку
 			$resultArray[$i][] = $val;
 			
@@ -102,6 +119,7 @@ if ($itemsTotal > 0){
 				0,
 				$itemsNumberInColumn
 			);
+			
 			//Пересчет кол-ва в колонке для оставшегося кол-ва элементов и колонок
 			$itemsNumberInColumn = ceil(count($source_items) / ($columnsNumber - $i));
 		}
