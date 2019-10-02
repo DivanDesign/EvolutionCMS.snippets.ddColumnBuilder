@@ -81,6 +81,7 @@ Elements → Snippets: Create a new snippet with the following data:
 		Available placeholders:
 		* `[+result+]` — the snippet result.
 		* `[+columnsNumber+]` — the actual number of columns.
+		* `[+itemsTotal+]` — total number of getting `source_items`.
 		
 	* Valid values:
 		* `string_chunkName`

@@ -171,7 +171,8 @@ if ($itemsTotal > 0){
 			'text' => $modx->getTpl($tpls_outer),
 			'data' => [
 				'result' => $snippetResult,
-				'columnsNumber' => $columnsNumber
+				'columnsNumber' => $columnsNumber,
+				'itemsTotal' => $itemsTotal
 			]
 		]);
 	}
