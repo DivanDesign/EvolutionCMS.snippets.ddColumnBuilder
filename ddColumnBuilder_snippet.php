@@ -127,8 +127,10 @@ if ($itemsTotal > 0){
 			$itemsNumberInColumn = ceil(count($source_items) / ($columnsNumber - $i));
 		}
 		
-		//Последняя колонка с остатком
-		$resultArray[] = $source_items;
+		if (count($source_items) > 0){
+			//Последняя колонка с остатком
+			$resultArray[] = $source_items;
+		}
 	}
 	
 	$i = 0;
