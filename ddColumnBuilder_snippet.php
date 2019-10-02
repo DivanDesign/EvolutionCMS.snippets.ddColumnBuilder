@@ -170,8 +170,8 @@ if ($itemsTotal > 0){
 		$snippetResult = ddTools::parseText([
 			'text' => $modx->getTpl($tpls_outer),
 			'data' => [
-				'result' => $snippetResult,
-				'columnsNumber' => $columnsNumber,
+				'snippetResult' => $snippetResult,
+				'columnsTotal' => $columnsNumber,
 				'itemsTotal' => $itemsTotal
 			]
 		]);
