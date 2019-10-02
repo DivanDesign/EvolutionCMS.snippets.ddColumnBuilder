@@ -11,6 +11,9 @@
 //Include (MODX)EvolutionCMS.libraries.ddTools
 require_once $modx->getConfig('base_path') . 'assets/libs/ddTools/modx.ddtools.class.php';
 
+//The snippet must return an empty string even if result is absent
+$snippetResult = '';
+
 $source_itemsDelimiter =
 	isset($source_itemsDelimiter) ?
 	$source_itemsDelimiter :
@@ -128,7 +131,6 @@ if ($itemsTotal > 0){
 		$resultArray[] = $source_items;
 	}
 	
-	$result = '';
 	$i = 0;
 	
 	//Проверим на всякий случай. Вылет бывает, когда указываешь 2 колонки, а Ditto возвращает один элемент (который на 2 колонки не разделить).
@@ -149,7 +151,7 @@ if ($itemsTotal > 0){
 		}
 		
 		//Парсим колонку
-		$result .= ddTools::parseText([
+		$snippetResult .= ddTools::parseText([
 			'text' => $columnTpl,
 			'data' => [
 				'items' => implode(
@@ -165,10 +167,10 @@ if ($itemsTotal > 0){
 	}
 	
 	if (isset($tpls_outer)){
-		$result = ddTools::parseText([
+		$snippetResult = ddTools::parseText([
 			'text' => $modx->getTpl($tpls_outer),
 			'data' => [
-				'result' => $result,
+				'result' => $snippetResult,
 				'columnsNumber' => $columnsNumber
 			]
 		]);
@@ -177,12 +179,12 @@ if ($itemsTotal > 0){
 	//Если переданы дополнительные данные
 	if (isset($placeholders)){
 		//Парсим
-		$result = ddTools::parseText([
-			'text' => $result,
+		$snippetResult = ddTools::parseText([
+			'text' => $snippetResult,
 			'data' => ddTools::encodedStringToArray($placeholders)
 		]);
 	}
-	
-	return $result;
 }
+
+return $snippetResult;
 ?>
