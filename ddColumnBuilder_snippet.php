@@ -53,13 +53,13 @@ $orderBy =
 
 $tpls_column =
 	isset($tpls_column) ?
-	$modx->getTpl($tpls_column) :
+	\ddTools::getTpl($tpls_column) :
 	'<div>[+items+]</div>'
 ;
 //Если шаблон последней колонки, не задан — будет как и все
 $tpls_columnLast =
 	isset($tpls_columnLast) ?
-	$modx->getTpl($tpls_columnLast) :
+	\ddTools::getTpl($tpls_columnLast) :
 	$tpls_column
 ;
 
@@ -170,7 +170,7 @@ if ($itemsTotal > 0){
 	
 	if (isset($tpls_outer)){
 		$snippetResult = ddTools::parseText([
-			'text' => $modx->getTpl($tpls_outer),
+			'text' => \ddTools::getTpl($tpls_outer),
 			'data' => [
 				'snippetResult' => $snippetResult,
 				'columnsTotal' => $columnsNumber,
