@@ -22,14 +22,14 @@ $source_itemsDelimiter =
 	$source_itemsDelimiter :
 	'<!--ddColumnBuilder-->'
 ;
-$source_items =
-	isset($source_items) ?
-	explode(
+if (!isset($source_items)){
+	$source_items = [];
+}elseif(!is_array($source_items)){
+	$source_items = explode(
 		$source_itemsDelimiter,
 		$source_items
-	) :
-	[]
-;
+	);
+}
 
 //Количество колонок
 $columnsNumber =

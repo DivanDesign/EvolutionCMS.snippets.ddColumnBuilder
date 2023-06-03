@@ -25,11 +25,13 @@ Elements → Snippets: Create a new snippet with the following data:
 
 * `source_items`
 	* Desctription: The source items.
-	* Valid values: `string`
+	* Valid values:
+		* `string`
+		* `array`
 	* **Required**
 	
 * `source_itemsDelimiter`
-	* Desctription: The source items delimiter.
+	* Desctription: The source items delimiter (used only if `source_items` is string).
 	* Valid values: `string`
 	* Default value: `'<!--ddColumnBuilder-->'`
 	
