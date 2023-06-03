@@ -1,0 +1,52 @@
+{
+	"name": "dd/evolutioncms-snippets-ddcolumnbuilder",
+	"type": "modxevo-snippet",
+	"version": "6.1.0",
+	"description": "Outputs items (e. g. results of ddGetDucuments, ddGetMultipleField, Ditto, etc.) in multiple columns, trying to distribute them evenly.",
+	"keywords": [
+		"modx",
+		"modx evo",
+		"modx evolution",
+		"evo",
+		"evo cms",
+		"evolutioncms",
+		"evolution cms",
+		"dd group",
+		"dd studio",
+		"divandesign",
+		"ddcolumnbuilder",
+		"column builder",
+		"content columns",
+		"content items"
+	],
+	"support": {
+		"chat": "https://t.me/dd_code"
+	},
+	"authors": [
+		{
+			"name": "Ilyas Ronef",
+			"email": "ilyas@DivanDesign.ru",
+			"homepage": "https://ronef.ru",
+			"role": "Owner"
+		},
+		{
+			"name": "Andrey Demchenko",
+			"homepage": "https://github.com/deversjkee",
+			"role": "Developer"
+		},
+		{
+			"name": "Andrey Dunaev",
+			"homepage": "https://github.com/svolochev",
+			"role": "Developer"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0",
+		"dd/evolutioncms-libraries-ddtools": ">=0.60.0"
+	},
+	"autoload": {
+		"psr-4": {
+			"ddColumnBuilder\\": "src/"
+		}
+	}
+}
