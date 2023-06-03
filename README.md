@@ -95,3 +95,6 @@ Elements → Snippets: Create a new snippet with the following data:
 		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
 		* `stringQueryFormatted` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
 	* Default value: —
+
+
+<link rel="stylesheet" type="text/css" href="https://raw.githack.com/DivanDesign/CSS.ddMarkdown/master/style.min.css" />
