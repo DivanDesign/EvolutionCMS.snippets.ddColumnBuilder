@@ -97,4 +97,11 @@ Elements → Snippets: Create a new snippet with the following data:
 	* Default value: —
 
 
+## Links
+
+* [Telegram chat](https://t.me/dd_code)
+* [Packagist](https://packagist.org/packages/dd/evolutioncms-snippets-ddcolumnbuilder)
+* [GitHub](https://github.com/DivanDesign/EvolutionCMS.snippets.ddColumnBuilder)
+
+
 <link rel="stylesheet" type="text/css" href="https://raw.githack.com/DivanDesign/CSS.ddMarkdown/master/style.min.css" />
