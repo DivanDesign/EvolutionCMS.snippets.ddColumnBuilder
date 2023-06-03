@@ -1,4 +1,4 @@
-# ddColumnBuilder changelog
+# (MODX)EvolutionCMS.snippets.ddColumnBuilder changelog
 
 
 ## Version 6.0 (2019-10-02)

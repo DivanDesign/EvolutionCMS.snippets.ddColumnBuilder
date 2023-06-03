@@ -3,16 +3,18 @@
 Выводит элементы (например: результаты Ditto, ddGetDucuments, ddGetMultipleField и т. п.) в несколько колонок, стараясь равномерно распределить количество.
 
 
-## # Requires
+## Requires
+
 * PHP >= 5.4
 * [(MODX)EvolutionCMS](https://github.com/evolution-cms/evolution) >= 1.1
 * [(MODX)EvolutionCMS.libraries.ddTools](http://code.divandesign.biz/modx/ddtools) >= 0.60
 
 
-## # Documentation
+## Documentation
 
 
-### ## Installation
+### Installation
+
 Elements → Snippets: Create a new snippet with the following data:
 
 1. Snippet name: `ddColumnBuilder`.
@@ -22,7 +24,7 @@ Elements → Snippets: Create a new snippet with the following data:
 5. Snippet code (php): Insert content of the `ddColumnBuilder_snippet` file from the archive.
 
 
-### ## Parameters description
+### Parameters description
 
 * `source_items`
 	* Desctription: The source items.
@@ -40,11 +42,13 @@ Elements → Snippets: Create a new snippet with the following data:
 	* Default value: `1`
 	
 * `minItemsInColumn`
-	* Desctription: The minimum number of items in one column (0 — any).
-	* Valid values: `integer`
+	* Desctription: The minimum number of items in one column.
+	* Valid values:
+		* `integer`
+		* `0` — any
 	* Default value: `0`
 	
-* `orderItemsBy`
+* `orderBy`
 	* Desctription: How to sort items?
 	* Valid values:
 		* `'column'` — first fills up the first column, then second, etc (`[[1, 2, 3], [4, 5, 6], [7, 8, 9]]`)
@@ -59,7 +63,7 @@ Elements → Snippets: Create a new snippet with the following data:
 		* `[+columnNumber+]` — number of column.
 		
 	* Valid values:
-		* `string_chunkName`
+		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 	* Default value: `'@CODE:<div>[+items+]</div>'`
 	
@@ -71,7 +75,7 @@ Elements → Snippets: Create a new snippet with the following data:
 		* `[+columnNumber+]` — number of column.
 		
 	* Valid values:
-		* `string_chunkName`
+		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 	* Default value: = `tpls_column`
 	
@@ -84,13 +88,13 @@ Elements → Snippets: Create a new snippet with the following data:
 		* `[+itemsTotal+]` — the total number of getting `source_items`.
 		
 	* Valid values:
-		* `string_chunkName`
+		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
-	* Default value: `'@CODE:[+result+]'`
+	* Default value: — (is not used)
 	
 * `placeholders`
 	* Desctription: Additional data has to be passed into the result string. Arrays are supported too: `some[a]=one&some[b]=two` => `[+some.a+]`, `[+some.b+]`; `some[]=one&some[]=two` => `[+some.0+]`, `[some.1]`.
 	* Valid values:
-		* `stirng_json` — as [JSON](https://en.wikipedia.org/wiki/JSON)
-		* `string_queryFormated` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
+		* `stringJsonObject` — as [JSON](https://en.wikipedia.org/wiki/JSON)
+		* `stringQueryFormatted` — as [Query string](https://en.wikipedia.org/wiki/Query_string)
 	* Default value: —
