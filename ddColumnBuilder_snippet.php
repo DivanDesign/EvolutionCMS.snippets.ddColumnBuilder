@@ -9,7 +9,10 @@
  */
 
 //Include (MODX)EvolutionCMS.libraries.ddTools
-require_once($modx->getConfig('base_path') . 'assets/libs/ddTools/modx.ddtools.class.php');
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddTools/modx.ddtools.class.php'
+);
 
 //The snippet must return an empty string even if result is absent
 $snippetResult = '';
@@ -104,7 +107,10 @@ if ($itemsTotal > 0){
 			$resultArray[$i][] = $val;
 			
 			$i++;
-			if ($i == $columnsNumber){$i = 0;}
+			
+			if ($i == $columnsNumber){
+				$i = 0;
+			}
 		}
 	//В противном случае по колонкам
 	}else{
@@ -124,7 +130,10 @@ if ($itemsTotal > 0){
 			);
 			
 			//Пересчет кол-ва в колонке для оставшегося кол-ва элементов и колонок
-			$itemsNumberInColumn = ceil(count($source_items) / ($columnsNumber - $i));
+			$itemsNumberInColumn = ceil(
+				count($source_items) /
+				($columnsNumber - $i)
+			);
 		}
 		
 		if (count($source_items) > 0){
@@ -153,7 +162,7 @@ if ($itemsTotal > 0){
 		}
 		
 		//Парсим колонку
-		$snippetResult .= ddTools::parseText([
+		$snippetResult .= \ddTools::parseText([
 			'text' => $columnTpl,
 			'data' => [
 				'items' => implode(
@@ -169,7 +178,7 @@ if ($itemsTotal > 0){
 	}
 	
 	if (isset($tpls_outer)){
-		$snippetResult = ddTools::parseText([
+		$snippetResult = \ddTools::parseText([
 			'text' => \ddTools::getTpl($tpls_outer),
 			'data' => [
 				'snippetResult' => $snippetResult,
@@ -182,9 +191,9 @@ if ($itemsTotal > 0){
 	//Если переданы дополнительные данные
 	if (isset($placeholders)){
 		//Парсим
-		$snippetResult = ddTools::parseText([
+		$snippetResult = \ddTools::parseText([
 			'text' => $snippetResult,
-			'data' => ddTools::encodedStringToArray($placeholders)
+			'data' => \ddTools::encodedStringToArray($placeholders)
 		]);
 	}
 }
