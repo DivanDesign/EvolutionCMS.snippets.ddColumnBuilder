@@ -193,7 +193,7 @@ if ($itemsTotal > 0){
 		//Парсим
 		$snippetResult = \ddTools::parseText([
 			'text' => $snippetResult,
-			'data' => \ddTools::encodedStringToArray($placeholders)
+			'data' => $placeholders
 		]);
 	}
 }
