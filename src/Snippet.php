@@ -3,7 +3,7 @@ namespace ddColumnBuilder;
 
 class Snippet extends \DDTools\Snippet {
 	protected
-		$version = '6.0.0',
+		$version = '6.1.0',
 		
 		$params = [
 			//Defaults

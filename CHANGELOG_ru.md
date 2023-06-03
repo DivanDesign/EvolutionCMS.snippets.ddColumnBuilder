@@ -1,6 +1,19 @@
 # (MODX)EvolutionCMS.snippets.ddColumnBuilder changelog
 
 
+## Версия 6.1 (2023-06-03)
+* \+ Параметры → `source_items`: Также может быть задан, как нативный PHP массив, а не только в виде строки с разделителем.
+* \+ Параметры → `placeholders`: Также может быть задан, как [HJSON](https://hjson.github.io/) или как нативный PHP объект/массив.
+* \+ Запустить сниппет без DB и eval можно через `\DDTools\Snippet::runSnippet` (см. README → Примеры).
+* \* `\ddTools::getTpl` используется вместо `$modx->getTpl` (стало чуть меньше багов).
+* \+ README:
+	* \+ Установка → Используя (MODX)EvolutionCMS.libraries.ddInstaller.
+	* \+ Ссылки.
+* \+ README_ru, CHANGELOG_ru.
+* \+ Composer.json.
+* \* Внимание! Требуется (MODX)EvolutionCMS.libraries.ddTools >= 0.60.
+
+
 ## Версия 6.0 (2019-10-02)
 * \* Параметры → `tpls_outer` → Плейсхолдеры:
 	* \+ `[+itemsTotal+]`: Новый плейсхолдер.

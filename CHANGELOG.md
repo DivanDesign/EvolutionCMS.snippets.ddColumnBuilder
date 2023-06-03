@@ -1,6 +1,19 @@
 # (MODX)EvolutionCMS.snippets.ddColumnBuilder changelog
 
 
+## Version 6.1 (2023-06-03)
+* \+ Parameters → `source_items`: Can also be set as a native PHP array, not only separated string.
+* \+ Parameters → `placeholders`: Can also be set as [HJSON](https://hjson.github.io/) or as a native PHP object/array.
+* \+ You can just call `\DDTools\Snippet::runSnippet` to run the snippet without DB and eval (see README → Examples).
+* \* `\ddTools::getTpl` is used instead of `$modx->getTpl` (means a bit less bugs).
+* \+ README:
+	* \+ Installation → Using (MODX)EvolutionCMS.libraries.ddInstaller.
+	* \+ Links.
+* \+ README_ru, CHANGELOG_ru.
+* \+ Composer.json.
+* \* Attention! (MODX)EvolutionCMS.libraries.ddTools >= 0.60 is required.
+
+
 ## Version 6.0 (2019-10-02)
 * \* Parameters → `tpls_outer` → Placeholders:
 	* \+ `[+itemsTotal+]`: The new placeholder.

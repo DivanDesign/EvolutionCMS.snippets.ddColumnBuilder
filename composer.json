@@ -1,7 +1,7 @@
 {
 	"name": "dd/evolutioncms-snippets-ddcolumnbuilder",
 	"type": "modxevo-snippet",
-	"version": "6.0.0",
+	"version": "6.1.0",
 	"description": "Outputs items (e. g. results of ddGetDucuments, ddGetMultipleField, Ditto, etc.) in multiple columns, trying to distribute them evenly.",
 	"keywords": [
 		"modx",

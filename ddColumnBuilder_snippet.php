@@ -1,11 +1,11 @@
 <?php
 /**
  * ddColumnBuilder
- * @version 6.0 (2019-10-02)
+ * @version 6.1 (2023-06-03)
  * 
  * @see README.md
  * 
- * @copyright 2010–2019 Ronef {@link https://Ronef.ru }
+ * @copyright 2010–2023 Ronef {@link https://Ronef.ru }
  */
 
 //Include (MODX)EvolutionCMS.libraries.ddTools
