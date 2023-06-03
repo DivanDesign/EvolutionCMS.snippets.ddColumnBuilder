@@ -10,10 +10,7 @@
 * [(MODX)EvolutionCMS.libraries.ddTools](http://code.divandesign.biz/modx/ddtools) >= 0.60
 
 
-## Documentation
-
-
-### Installation
+## Installation
 
 Elements → Snippets: Create a new snippet with the following data:
 
@@ -24,7 +21,7 @@ Elements → Snippets: Create a new snippet with the following data:
 5. Snippet code (php): Insert content of the `ddColumnBuilder_snippet` file from the archive.
 
 
-### Parameters description
+## Parameters description
 
 * `source_items`
 	* Desctription: The source items.
