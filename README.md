@@ -1,6 +1,6 @@
 # (MODX)EvolutionCMS.snippets.ddColumnBuilder
 
-Выводит элементы (например: результаты Ditto, ddGetDucuments, ddGetMultipleField и т. п.) в несколько колонок, стараясь равномерно распределить количество.
+Outputs items (e. g. results of ddGetDucuments, ddGetMultipleField, Ditto, etc.) in multiple columns, trying to distribute them evenly.
 
 
 ## Requires
@@ -41,7 +41,7 @@ require_once(
 #### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddColumnBuilder`.
-2. Description: `<b>6.0</b> Выводит элементы (например: результаты Ditto, ddGetDucuments, ddGetMultipleField и т. п.) в несколько колонок, стараясь равномерно распределить количество.`.
+2. Description: `<b>6.0</b> Outputs items (e. g. results of ddGetDucuments, ddGetMultipleField, Ditto, etc.) in multiple columns, trying to distribute them evenly.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
 5. Snippet code (php): Insert content of the `ddColumnBuilder_snippet.php` file from the archive.
@@ -87,37 +87,31 @@ require_once(
 	* Default value: `'column'`
 	
 * `tpls_column`
-	* Desctription: The template for column rendering.
-		
+	* Desctription: The template for column rendering.  
 		Available placeholders:
-		* `[+items+]` — items.
-		* `[+columnNumber+]` — number of column.
-		
+		* `[+items+]` — items
+		* `[+columnNumber+]` — number of column
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 	* Default value: `'@CODE:<div>[+items+]</div>'`
 	
 * `tpls_columnLast`
-	* Desctription: The template for last column rendering.
-		
+	* Desctription: The template for last column rendering.  
 		Available placeholders:
-		* `[+items+]` — items.
-		* `[+columnNumber+]` — number of column.
-		
+		* `[+items+]` — items
+		* `[+columnNumber+]` — number of column
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
 	* Default value: = `tpls_column`
 	
 * `tpls_outer`
-	* Desctription: Wrapper template.
-		
+	* Desctription: Wrapper template.  
 		Available placeholders:
 		* `[+snippetResult+]` — the snippet result.
-		* `[+columnsTotal+]` — the actual number of columns.
-		* `[+itemsTotal+]` — the total number of getting `source_items`.
-		
+		* `[+columnsTotal+]` — the actual number of columns
+		* `[+itemsTotal+]` — the total number of getting `source_items`
 	* Valid values:
 		* `stringChunkName`
 		* `string` — use inline templates starting with `@CODE:`
