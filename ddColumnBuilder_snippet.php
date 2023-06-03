@@ -8,91 +8,105 @@
  * @copyright 2010–2019 Ronef {@link https://Ronef.ru }
  */
 
+//# Include
 //Include (MODX)EvolutionCMS.libraries.ddTools
 require_once(
 	$modx->getConfig('base_path') .
 	'assets/libs/ddTools/modx.ddtools.class.php'
 );
 
-//The snippet must return an empty string even if result is absent
-$snippetResult = '';
 
-$source_itemsDelimiter =
-	isset($source_itemsDelimiter) ?
-	$source_itemsDelimiter :
-	'<!--ddColumnBuilder-->'
-;
-if (!isset($source_items)){
-	$source_items = [];
-}elseif(!is_array($source_items)){
-	$source_items = explode(
-		$source_itemsDelimiter,
-		$source_items
+//# Prepare params
+$params = \DDTools\ObjectTools::extend([
+	'objects' => [
+		(object) [
+			'source_items' => [],
+			'source_itemsDelimiter' => '<!--ddColumnBuilder-->',
+			
+			'columnsNumber' => 1,
+			'minItemsInColumn' => 0,
+			'orderBy' => 'column',
+			
+			'tpls_column' => '@CODE:<div>[+items+]</div>',
+			'tpls_columnLast' => null,
+			'tpls_outer' => '',
+			'placeholders' => null,
+		],
+		$params
+	]
+]);
+
+if(!is_array($params->source_items)){
+	$params->source_items = explode(
+		$params->source_itemsDelimiter,
+		$params->source_items
 	);
 }
 
-//Количество колонок
-$columnsNumber =
-	(
-		isset($columnsNumber) &&
-		is_numeric($columnsNumber) &&
-		$columnsNumber > 0
-	) ?
-	$columnsNumber :
-	1
-;
-//Минимальное количество строк
-$minItemsInColumn =
-	isset($minItemsInColumn) ?
-	intval($minItemsInColumn) :
-	0
-;
-//Сортировка между колонками
-$orderBy =
-	isset($orderBy) ?
-	$orderBy :
-	'column'
-;
+//Integers
+foreach (
+	[
+		'columnsNumber',
+		'minItemsInColumn',
+	] as
+	$paramName
+){
+	$params->{$paramName} = intval($params->{$paramName});
+}
 
-$tpls_column =
-	isset($tpls_column) ?
-	\ddTools::getTpl($tpls_column) :
-	'<div>[+items+]</div>'
-;
-//Если шаблон последней колонки, не задан — будет как и все
-$tpls_columnLast =
-	isset($tpls_columnLast) ?
-	\ddTools::getTpl($tpls_columnLast) :
-	$tpls_column
-;
+if ($params->columnsNumber <= 0){
+	$params->columnsNumber = 1;
+}
+
+if (is_null($params->tpls_columnLast)){
+	$params->tpls_columnLast = $params->tpls_column;
+}
+
+//Templates
+foreach (
+	[
+		'tpls_column',
+		'tpls_columnLast',
+		'tpls_outer',
+	] as
+	$paramName
+){
+	$params->{$paramName} = \ddTools::getTpl($params->{$paramName});
+}
+
+
+//# Run
+
+//The snippet must return an empty string even if result is absent
+$snippetResult = '';
 
 //Всего строк
-$itemsTotal = count($source_items);
+$itemsTotal = count($params->source_items);
 
 //Если что-то есть
 if ($itemsTotal > 0){
 	//Количество элементов в колонке (общее количество элементов / количество колонок) 
-	$itemsNumberInColumn = ceil($itemsTotal / $columnsNumber);
+	$itemsNumberInColumn = ceil($itemsTotal / $params->columnsNumber);
 	
 	//Если задано минимальное количество строк в колонке
-	if ($minItemsInColumn){
+	if ($params->minItemsInColumn){
 		//Количество колонок при минимальном количестве строк
-		$columnsNumberWithMinRows = ceil($itemsTotal / $minItemsInColumn);
+		$columnsNumberWithMinRows = ceil($itemsTotal / $params->minItemsInColumn);
 		
 		//Если это количество меньше заданного
-		if ($columnsNumberWithMinRows < $columnsNumber){
+		if ($columnsNumberWithMinRows < $params->columnsNumber){
 			//Тогда элементов в колонке будет меньше заданного (логика)
-			$itemsNumberInColumn = $minItemsInColumn;
+			$itemsNumberInColumn = $params->minItemsInColumn;
 			//И колонок тоже
-			$columnsNumber = $columnsNumberWithMinRows;
+			$params->columnsNumber = $columnsNumberWithMinRows;
 		}
 	}
 	
 	//Если сортировка по строкам
-	if ($orderBy == 'row'){
+	if ($params->orderBy == 'row'){
 		$resultArray = array_fill(
 			0,
-			$columnsNumber,
+			$params->columnsNumber,
 			[]
 		);
 		
@@ -100,7 +114,7 @@ if ($itemsTotal > 0){
 		
 		//Пробегаемся по результатам
 		foreach (
-			$source_items as
+			$params->source_items as
 			$val
 		){
 			//Запоминаем уже готовые отпаршенные значения в нужную колонку
@@ -108,7 +122,7 @@ if ($itemsTotal > 0){
 			
 			$i++;
 			
-			if ($i == $columnsNumber){
+			if ($i == $params->columnsNumber){
 				$i = 0;
 			}
 		}
@@ -119,46 +133,46 @@ if ($itemsTotal > 0){
 		//Проходка по кол-ву колонок-1
 		for (
 			$i = 1;
-			$i < $columnsNumber;
+			$i < $params->columnsNumber;
 			$i++
 		){ 
 			//Заполняем колонку нужным кол-вом
 			$resultArray[] = array_splice(
-				$source_items,
+				$params->source_items,
 				0,
 				$itemsNumberInColumn
 			);
 			
 			//Пересчет кол-ва в колонке для оставшегося кол-ва элементов и колонок
 			$itemsNumberInColumn = ceil(
-				count($source_items) /
-				($columnsNumber - $i)
+				count($params->source_items) /
+				($params->columnsNumber - $i)
 			);
 		}
 		
-		if (count($source_items) > 0){
+		if (count($params->source_items) > 0){
 			//Последняя колонка с остатком
-			$resultArray[] = $source_items;
+			$resultArray[] = $params->source_items;
 		}
 	}
 	
 	$i = 0;
 	
 	//Проверим на всякий случай. Вылет бывает, когда указываешь 2 колонки, а Ditto возвращает один элемент (который на 2 колонки не разделить).
-	if ($columnsNumber > count($resultArray)){
-		$columnsNumber = count($resultArray);
+	if ($params->columnsNumber > count($resultArray)){
+		$params->columnsNumber = count($resultArray);
 	}
 	
 	//Перебираем колонки
-	while ($i < $columnsNumber){
+	while ($i < $params->columnsNumber){
 		//Выбираем нужный шаблон (если колонка последняя, но не единственная)
 		if (
-			$columnsNumber > 1 &&
-			$i == $columnsNumber - 1
+			$params->columnsNumber > 1 &&
+			$i == $params->columnsNumber - 1
 		){
-			$columnTpl = $tpls_columnLast;
+			$columnTpl = $params->tpls_columnLast;
 		}else{
-			$columnTpl = $tpls_column;
+			$columnTpl = $params->tpls_column;
 		}
 		
 		//Парсим колонку
@@ -177,23 +191,23 @@ if ($itemsTotal > 0){
 		$i++;
 	}
 	
-	if (isset($tpls_outer)){
+	if (!empty($params->tpls_outer)){
 		$snippetResult = \ddTools::parseText([
-			'text' => \ddTools::getTpl($tpls_outer),
+			'text' => $params->tpls_outer,
 			'data' => [
 				'snippetResult' => $snippetResult,
-				'columnsTotal' => $columnsNumber,
+				'columnsTotal' => $params->columnsNumber,
 				'itemsTotal' => $itemsTotal
 			]
 		]);
 	}
 	
 	//Если переданы дополнительные данные
-	if (isset($placeholders)){
+	if (!empty($params->placeholders)){
 		//Парсим
 		$snippetResult = \ddTools::parseText([
 			'text' => $snippetResult,
-			'data' => $placeholders
+			'data' => $params->placeholders
 		]);
 	}
 }
