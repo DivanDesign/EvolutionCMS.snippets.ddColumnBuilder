@@ -12,13 +12,20 @@
 
 ## Installation
 
-Elements → Snippets: Create a new snippet with the following data:
+
+### 1. Elements → Snippets: Create a new snippet with the following data
 
 1. Snippet name: `ddColumnBuilder`.
 2. Description: `<b>6.0</b> Выводит элементы (например: результаты Ditto, ddGetDucuments, ddGetMultipleField и т. п.) в несколько колонок, стараясь равномерно распределить количество.`.
 3. Category: `Core`.
 4. Parse DocBlock: `no`.
-5. Snippet code (php): Insert content of the `ddColumnBuilder_snippet` file from the archive.
+5. Snippet code (php): Insert content of the `ddColumnBuilder_snippet.php` file from the archive.
+
+
+### 2. Elements → Manage Files
+
+1. Create a new folder `assets/snippets/ddColumnBuilder/`.
+2. Extract the archive to the folder (except `ddColumnBuilder_snippet.php`).
 
 
 ## Parameters description
@@ -106,6 +113,33 @@ Elements → Snippets: Create a new snippet with the following data:
 			* `arrayAssociative`
 			* `object`
 	* Default value: —
+
+
+## Examples
+
+
+### Run the snippet through `\DDTools\Snippet::runSnippet` without DB and eval
+
+```php
+//Include (MODX)EvolutionCMS.libraries.ddTools
+require_once(
+	$modx->getConfig('base_path') .
+	'assets/libs/ddTools/modx.ddtools.class.php'
+);
+
+//Run (MODX)EvolutionCMS.snippets.ddColumnBuilder
+\DDTools\Snippet::runSnippet([
+	'name' => 'ddColumnBuilder',
+	'params' => [
+		'source_items' => [
+			'Item 1',
+			'Item 2',
+			'Item 3',
+		],
+		'columnsNumber' => 2
+	]
+]);
+```
 
 
 ## Links
