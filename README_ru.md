@@ -20,14 +20,14 @@
 ```php
 // Подключение (MODX)EvolutionCMS.libraries.ddInstaller
 require_once(
-	$modx->getConfig('base_path') .
-	'assets/libs/ddInstaller/require.php'
+	$modx->getConfig('base_path')
+	. 'assets/libs/ddInstaller/require.php'
 );
 
 // Установка (MODX)EvolutionCMS.snippets.ddColumnBuilder
 \DDInstaller::install([
 	'url' => 'https://github.com/DivanDesign/EvolutionCMS.snippets.ddColumnBuilder',
-	'type' => 'snippet'
+	'type' => 'snippet',
 ]);
 ```
 
@@ -142,8 +142,8 @@ require_once(
 ```php
 // Подключение (MODX)EvolutionCMS.libraries.ddTools
 require_once(
-	$modx->getConfig('base_path') .
-	'assets/libs/ddTools/modx.ddtools.class.php'
+	$modx->getConfig('base_path')
+	. 'assets/libs/ddTools/modx.ddtools.class.php'
 );
 
 // Запуск (MODX)EvolutionCMS.snippets.ddColumnBuilder
@@ -155,8 +155,8 @@ require_once(
 			'Item 2',
 			'Item 3',
 		],
-		'columnsNumber' => 2
-	]
+		'columnsNumber' => 2,
+	],
 ]);
 ```
 

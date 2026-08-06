@@ -2,33 +2,31 @@
 namespace ddColumnBuilder;
 
 class Snippet extends \DDTools\Snippet {
-	protected
-		$version = '6.1.0',
+	protected $version = '6.1.0';
 		
-		$params = [
-			// Defaults
-			'source_items' => [],
-			'source_itemsDelimiter' => '<!--ddColumnBuilder-->',
-			
-			'columnsNumber' => 1,
-			'minItemsInColumn' => 0,
-			'orderBy' => 'column',
-			
-			'tpls_column' => '@CODE:<div>[+items+]</div>',
-			'tpls_columnLast' => null,
-			'tpls_outer' => '',
-			'placeholders' => [],
-		],
+	protected $params = [
+		// Defaults
+		'source_items' => [],
+		'source_itemsDelimiter' => '<!--ddColumnBuilder-->',
 		
-		$paramsTypes = [
-			'columnsNumber' => 'integer',
-			'minItemsInColumn' => 'integer',
-		]
-	;
+		'columnsNumber' => 1,
+		'minItemsInColumn' => 0,
+		'orderBy' => 'column',
+		
+		'tpls_column' => '@CODE:<div>[+items+]</div>',
+		'tpls_columnLast' => null,
+		'tpls_outer' => '',
+		'placeholders' => [],
+	];
+		
+	protected $paramsTypes = [
+		'columnsNumber' => 'integer',
+		'minItemsInColumn' => 'integer',
+	];
 	
 	/**
 	 * prepareParams
-	 * @version 1.0.1 (2024-08-06)
+	 * @version 1.0.2 (2026-08-06)
 	 * 
 	 * @param $params {stdClass|arrayAssociative|stringJsonObject|stringHjsonObject|stringQueryFormatted}
 	 * 
@@ -59,8 +57,8 @@ class Snippet extends \DDTools\Snippet {
 				'tpls_column',
 				'tpls_columnLast',
 				'tpls_outer',
-			] as
-			$paramName
+			]
+			as $paramName
 		){
 			$this->params->{$paramName} = \ddTools::getTpl($this->params->{$paramName});
 		}
@@ -68,7 +66,7 @@ class Snippet extends \DDTools\Snippet {
 	
 	/**
 	 * run
-	 * @version 1.0.1 (2024-08-06)
+	 * @version 1.0.2 (2026-08-06)
 	 * 
 	 * @return {string}
 	 */
@@ -109,8 +107,8 @@ class Snippet extends \DDTools\Snippet {
 				
 				// Пробегаемся по результатам
 				foreach (
-					$this->params->source_items as
-					$val
+					$this->params->source_items
+					as $val
 				){
 					// Запоминаем уже готовые отпаршенные значения в нужную колонку
 					$resultArray[$i][] = $val;
@@ -140,8 +138,8 @@ class Snippet extends \DDTools\Snippet {
 					
 					// Пересчет кол-ва в колонке для оставшегося кол-ва элементов и колонок
 					$itemsNumberInColumn = ceil(
-						count($this->params->source_items) /
-						($this->params->columnsNumber - $i)
+						count($this->params->source_items)
+						/ ($this->params->columnsNumber - $i)
 					);
 				}
 				
@@ -162,8 +160,8 @@ class Snippet extends \DDTools\Snippet {
 			while ($i < $this->params->columnsNumber){
 				// Выбираем нужный шаблон (если колонка последняя, но не единственная)
 				if (
-					$this->params->columnsNumber > 1 &&
-					$i == $this->params->columnsNumber - 1
+					$this->params->columnsNumber > 1
+					&& $i == $this->params->columnsNumber - 1
 				){
 					$columnTpl = $this->params->tpls_columnLast;
 				}else{
@@ -179,8 +177,8 @@ class Snippet extends \DDTools\Snippet {
 							$resultArray[$i]
 						),
 						// Порядковый номер колонки
-						'columnNumber' => $i + 1
-					]
+						'columnNumber' => $i + 1,
+					],
 				]);
 				
 				$i++;
@@ -192,8 +190,8 @@ class Snippet extends \DDTools\Snippet {
 					'data' => [
 						'snippetResult' => $result,
 						'columnsTotal' => $this->params->columnsNumber,
-						'itemsTotal' => $itemsTotal
-					]
+						'itemsTotal' => $itemsTotal,
+					],
 				]);
 			}
 			
@@ -202,7 +200,7 @@ class Snippet extends \DDTools\Snippet {
 				// Парсим
 				$result = \ddTools::parseText([
 					'text' => $result,
-					'data' => $this->params->placeholders
+					'data' => $this->params->placeholders,
 				]);
 			}
 		}
@@ -210,3 +208,4 @@ class Snippet extends \DDTools\Snippet {
 		return $result;
 	}
 }
+?>
